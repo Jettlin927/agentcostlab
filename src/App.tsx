@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle,
+  Award,
   Check,
   Copy,
   Download,
@@ -30,6 +31,7 @@ import {
   type SimulationConfig,
 } from './engine/simulator';
 import { TurnChart } from './components/TurnChart';
+import { ParetoScatterChart } from './components/ParetoScatterChart';
 import { ModelLeaderboard } from './components/ModelLeaderboard';
 import { PromptInspector } from './components/PromptInspector';
 
@@ -59,7 +61,7 @@ function getInitialConfig(): SimulationConfig {
 export function App() {
   const [config, setConfig] = useState<SimulationConfig>(getInitialConfig);
   const [activePresetId, setActivePresetId] = useState<string>('coding-agent');
-  const [activeTab, setActiveTab] = useState<'simulator' | 'inspector'>('simulator');
+  const [activeTab, setActiveTab] = useState<'simulator' | 'leaderboard' | 'inspector'>('simulator');
   const [lang, setLang] = useState<'en' | 'zh'>(() =>
     typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('zh')
       ? 'zh'
@@ -259,7 +261,7 @@ export function App() {
           </div>
 
           {/* Mode Tabs */}
-          <div className="inline-flex self-start rounded-xl border border-slate-800 bg-slate-900 p-1 text-xs">
+          <div className="inline-flex flex-wrap self-start rounded-xl border border-slate-800 bg-slate-900 p-1 text-xs">
             <button
               type="button"
               onClick={() => setActiveTab('simulator')}
@@ -270,7 +272,19 @@ export function App() {
               }`}
             >
               <Sliders className="h-3.5 w-3.5" />
-              {lang === 'zh' ? 'Agent 循环模拟器' : 'Agent Loop Simulator'}
+              {lang === 'zh' ? 'Agent 循环模拟器' : 'Loop Simulator'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('leaderboard')}
+              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 font-medium transition ${
+                activeTab === 'leaderboard'
+                  ? 'bg-emerald-400 text-slate-950 shadow'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <Award className="h-3.5 w-3.5" />
+              {lang === 'zh' ? '实力 × 性价比榜' : 'Value Leaderboard'}
             </button>
             <button
               type="button"
@@ -282,7 +296,7 @@ export function App() {
               }`}
             >
               <FileCode2 className="h-3.5 w-3.5" />
-              {lang === 'zh' ? 'CLAUDE.md / MCP 体检' : 'Prompt & MCP Inspector'}
+              {lang === 'zh' ? 'CLAUDE.md / MCP 体检' : 'MCP Inspector'}
             </button>
           </div>
         </section>
@@ -339,6 +353,21 @@ export function App() {
               setActiveTab('simulator');
             }}
           />
+        ) : activeTab === 'leaderboard' ? (
+          <div className="space-y-6">
+            <ParetoScatterChart
+              rows={leaderboard}
+              selectedModelId={config.modelId}
+              onSelectModel={(id) => update('modelId', id)}
+              lang={lang}
+            />
+            <ModelLeaderboard
+              rows={leaderboard}
+              selectedModelId={config.modelId}
+              onSelectModel={(id) => update('modelId', id)}
+              lang={lang}
+            />
+          </div>
         ) : (
           <div className="grid gap-6 lg:grid-cols-12">
             {/* Left Controls Column */}
@@ -738,12 +767,12 @@ export function App() {
               </p>
             </div>
             <a
-              href={SITE_META.sponsorUrl}
+              href={SITE_META.pricingIssueUrl}
               target="_blank"
               rel="noreferrer"
               className="text-xs font-medium text-sky-400 hover:text-sky-300"
             >
-              {lang === 'zh' ? '赞助或商务合作 →' : 'Sponsor this tool →'}
+              {lang === 'zh' ? '提交新模型定价 / 反馈 →' : 'Submit model pricing update →'}
             </a>
           </div>
           <div className="grid gap-4 md:grid-cols-3">

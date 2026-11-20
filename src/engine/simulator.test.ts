@@ -78,11 +78,17 @@ describe('AgentCostLab Simulation Engine', () => {
     expect(res.turns.some((t) => t.longContextTriggered)).toBe(true);
   });
 
-  it('ranks all models sorted by monthlyCost ascending', () => {
+  it('ranks all models by composite valueScore and identifies Pareto-optimal frontier', () => {
     const rows = compareAllModels(DEFAULT_CONFIG);
     expect(rows.length).toBeGreaterThanOrEqual(15);
     for (let i = 1; i < rows.length; i++) {
-      expect(rows[i].monthlyCost).toBeGreaterThanOrEqual(rows[i - 1].monthlyCost);
+      expect(rows[i].valueScore).toBeLessThanOrEqual(rows[i - 1].valueScore);
+    }
+    const paretoModels = rows.filter((r) => r.isParetoOptimal);
+    expect(paretoModels.length).toBeGreaterThanOrEqual(3);
+    // Every model's costPerSolvedTask should exceed its raw perRunCost since SWE-bench < 100%
+    for (const r of rows) {
+      expect(r.costPerSolvedTask).toBeGreaterThan(r.perRunCost);
     }
   });
 

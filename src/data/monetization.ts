@@ -21,7 +21,7 @@ export const SITE_META = {
   brandName: 'AgentCostLab',
   githubUrl: 'https://github.com/Jettlin927/agentcostlab',
   authorHandle: '@Jettlin927',
-  sponsorUrl: 'https://github.com/sponsors/Jettlin927',
+  pricingIssueUrl: 'https://github.com/Jettlin927/agentcostlab/issues',
 };
 
 export const OPTIMIZATION_PARTNERS: OptimizationPartner[] = [

@@ -12,6 +12,7 @@ Live Demo: **https://jettlin927.github.io/agentcostlab/**
 - **Prompt Caching Economics**: Models first-turn cache write multipliers (e.g., 1.25× on Anthropic vs 1.0× on OpenAI/DeepSeek) and subsequent cache-read discounts (up to 98% off).
 - **Hybrid Planner / Worker Routing**: Compare running every turn on a Frontier model vs routing Turn 1 + periodic planning turns to a Frontier model and tool-execution turns to an Economy worker.
 - **CLAUDE.md / AGENTS.md / MCP Schema Inspector**: 100% client-side token estimator + static linter that catches hardcoded API keys and cache-busting timestamps, then calculates the 1,000-run "token tax" of your file.
+- **Capability × Cost Pareto Leaderboard**: Combines Artificial Analysis Intelligence Index, SWE-bench Verified pass rates, and your exact multi-turn loop cost to plot the live **Pareto Frontier**, compute **Cost per Solved Task** (`perRunCost / passRate`), and rank models by composite **Value Score**.
 - **15+ Models (Nov 2026 API Pricing)**: OpenAI (GPT-6.2 Astra / Sol / Luna), Anthropic (Claude Fable 5.2 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5), Google (Gemini 4 Carbon / Argon / 3.8 Flash / 3.5 Flash-Lite), and DeepSeek (V4 Pro & V4.1 Flash Peak/Off-Peak).
 - **Programmatic SEO (pSEO) Built-In**: Post-build script emits static crawlable HTML routes for preset scenarios and head-to-head comparisons, plus `sitemap.xml`, `robots.txt`, and `404.html`.
 - **Shareable URLs & RFC Exports**: Every slider syncs to URL query parameters; one-click copy Markdown budget table or export CSV.

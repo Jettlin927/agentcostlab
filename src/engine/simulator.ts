@@ -320,11 +320,17 @@ export function simulateAgentCost(
 export interface ModelComparisonRow {
   model: LLMModel;
   perRunCost: number;
+  /** Expected USD per successfully solved task = perRunCost / (sweBenchPct / 100) */
+  costPerSolvedTask: number;
   monthlyCost: number;
   uncachedMonthlyCost: number;
   cacheSavingsPct: number;
   deltaVsSelectedPct: number;
   contextOverflow: boolean;
+  /** True if no other non-overflowing model is simultaneously smarter AND cheaper */
+  isParetoOptimal: boolean;
+  /** Composite Value Score (0-100) balancing Intelligence + SWE-bench vs log-scaled cost */
+  valueScore: number;
 }
 
 export function compareAllModels(
@@ -334,27 +340,73 @@ export function compareAllModels(
   const pool = customModels ? [...MODELS, ...customModels] : MODELS;
   const selectedResult = simulateAgentCost({ ...config, enableHybridRouting: false }, customModels);
 
-  return pool
-    .map((model) => {
-      const res = simulateAgentCost(
-        { ...config, modelId: model.id, enableHybridRouting: false },
-        customModels
-      );
-      const deltaVsSelectedPct =
-        selectedResult.monthlyCost > 0
-          ? ((res.monthlyCost - selectedResult.monthlyCost) / selectedResult.monthlyCost) * 100
-          : 0;
-      return {
-        model,
-        perRunCost: res.perRunCost,
-        monthlyCost: res.monthlyCost,
-        uncachedMonthlyCost: res.monthlyUncachedCost,
-        cacheSavingsPct: res.cacheSavingsPct,
-        deltaVsSelectedPct,
-        contextOverflow: res.contextOverflow,
-      };
-    })
-    .sort((a, b) => a.monthlyCost - b.monthlyCost);
+  const rawRows = pool.map((model) => {
+    const res = simulateAgentCost(
+      { ...config, modelId: model.id, enableHybridRouting: false },
+      customModels
+    );
+    const deltaVsSelectedPct =
+      selectedResult.monthlyCost > 0
+        ? ((res.monthlyCost - selectedResult.monthlyCost) / selectedResult.monthlyCost) * 100
+        : 0;
+    const passRate = Math.max(0.1, model.sweBenchPct / 100);
+    const costPerSolvedTask = res.perRunCost / passRate;
+
+    return {
+      model,
+      perRunCost: res.perRunCost,
+      costPerSolvedTask,
+      monthlyCost: res.monthlyCost,
+      uncachedMonthlyCost: res.monthlyUncachedCost,
+      cacheSavingsPct: res.cacheSavingsPct,
+      deltaVsSelectedPct,
+      contextOverflow: res.contextOverflow,
+      isParetoOptimal: false,
+      valueScore: 0,
+    };
+  });
+
+  // Compute Pareto frontier on (perRunCost ASC, intelligenceIndex DESC) among valid models
+  const validRows = rawRows.filter((r) => !r.contextOverflow);
+  for (const row of validRows) {
+    const dominated = validRows.some(
+      (other) =>
+        other.model.id !== row.model.id &&
+        other.model.intelligenceIndex >= row.model.intelligenceIndex &&
+        other.perRunCost <= row.perRunCost &&
+        (other.model.intelligenceIndex > row.model.intelligenceIndex ||
+          other.perRunCost < row.perRunCost)
+    );
+    row.isParetoOptimal = !dominated;
+  }
+
+  // Compute normalized Value Score (0-100): 60% capability + 40% log-cost efficiency
+  const minLogCost = Math.min(...rawRows.map((r) => Math.log10(Math.max(1e-6, r.perRunCost))));
+  const maxLogCost = Math.max(...rawRows.map((r) => Math.log10(Math.max(1e-6, r.perRunCost))));
+  const logSpan = Math.max(0.001, maxLogCost - minLogCost);
+
+  const minCap = Math.min(
+    ...rawRows.map((r) => r.model.intelligenceIndex * 0.6 + r.model.sweBenchPct * 0.4)
+  );
+  const maxCap = Math.max(
+    ...rawRows.map((r) => r.model.intelligenceIndex * 0.6 + r.model.sweBenchPct * 0.4)
+  );
+  const capSpan = Math.max(0.001, maxCap - minCap);
+
+  for (const row of rawRows) {
+    const cap = row.model.intelligenceIndex * 0.6 + row.model.sweBenchPct * 0.4;
+    const capNorm = (cap - minCap) / capSpan; // 0..1
+    const costNorm =
+      1 - (Math.log10(Math.max(1e-6, row.perRunCost)) - minLogCost) / logSpan; // 1 = cheapest, 0 = priciest
+    const paretoBonus = row.isParetoOptimal ? 6 : 0;
+    const overflowPenalty = row.contextOverflow ? 25 : 0;
+    row.valueScore = Math.max(
+      1,
+      Math.min(100, Math.round((capNorm * 58 + costNorm * 36 + paretoBonus) - overflowPenalty))
+    );
+  }
+
+  return rawRows.sort((a, b) => b.valueScore - a.valueScore);
 }
 
 /**
