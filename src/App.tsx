@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Award,
   Check,
+  Coins,
   Copy,
   Download,
   ExternalLink,
@@ -34,6 +35,7 @@ import { TurnChart } from './components/TurnChart';
 import { ParetoScatterChart } from './components/ParetoScatterChart';
 import { ModelLeaderboard } from './components/ModelLeaderboard';
 import { PromptInspector } from './components/PromptInspector';
+import { McpX402Tab } from './components/McpX402Tab';
 
 function getInitialConfig(): SimulationConfig {
   const fromQuery = parseConfigFromQuery(window.location.search);
@@ -61,7 +63,9 @@ function getInitialConfig(): SimulationConfig {
 export function App() {
   const [config, setConfig] = useState<SimulationConfig>(getInitialConfig);
   const [activePresetId, setActivePresetId] = useState<string>('coding-agent');
-  const [activeTab, setActiveTab] = useState<'simulator' | 'leaderboard' | 'inspector'>('simulator');
+  const [activeTab, setActiveTab] = useState<'simulator' | 'leaderboard' | 'inspector' | 'mcp'>(
+    'simulator'
+  );
   const [lang, setLang] = useState<'en' | 'zh'>(() =>
     typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('zh')
       ? 'zh'
@@ -298,6 +302,18 @@ export function App() {
               <FileCode2 className="h-3.5 w-3.5" />
               {lang === 'zh' ? 'CLAUDE.md / MCP 体检' : 'MCP Inspector'}
             </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('mcp')}
+              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 font-medium transition ${
+                activeTab === 'mcp'
+                  ? 'bg-amber-400 text-slate-950 shadow'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              <Coins className="h-3.5 w-3.5" />
+              {lang === 'zh' ? 'x402 收费 MCP' : 'x402 MCP'}
+            </button>
           </div>
         </section>
 
@@ -353,6 +369,8 @@ export function App() {
               setActiveTab('simulator');
             }}
           />
+        ) : activeTab === 'mcp' ? (
+          <McpX402Tab config={config} lang={lang} />
         ) : activeTab === 'leaderboard' ? (
           <div className="space-y-6">
             <ParetoScatterChart

@@ -14,6 +14,7 @@ Live Demo: **https://jettlin927.github.io/agentcostlab/**
 - **CLAUDE.md / AGENTS.md / MCP Schema Inspector**: 100% client-side token estimator + static linter that catches hardcoded API keys and cache-busting timestamps, then calculates the 1,000-run "token tax" of your file.
 - **Capability × Cost Pareto Leaderboard**: Combines Artificial Analysis Intelligence Index, SWE-bench Verified pass rates, and your exact multi-turn loop cost to plot the live **Pareto Frontier**, compute **Cost per Solved Task** (`perRunCost / passRate`), and rank models by composite **Value Score**.
 - **15+ Models (Nov 2026 API Pricing)**: OpenAI (GPT-6.2 Astra / Sol / Luna), Anthropic (Claude Fable 5.2 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5), Google (Gemini 4 Carbon / Argon / 3.8 Flash / 3.5 Flash-Lite), and DeepSeek (V4 Pro & V4.1 Flash Peak/Off-Peak).
+- **Pay-Per-Call x402 MCP Server (`worker/`)**: Cloudflare Workers Streamable HTTP MCP server (`/mcp` + `/.well-known/mcp.json`) with free `tools/list` discovery and **x402 v2 (`HTTP 402 Payment Required` / Base USDC)** micropayment gating on `simulate_agent_cost`, `recommend_pareto_route`, and `audit_prompt_cache_tax`.
 - **Programmatic SEO (pSEO) Built-In**: Post-build script emits static crawlable HTML routes for preset scenarios and head-to-head comparisons, plus `sitemap.xml`, `robots.txt`, and `404.html`.
 - **Shareable URLs & RFC Exports**: Every slider syncs to URL query parameters; one-click copy Markdown budget table or export CSV.
 
