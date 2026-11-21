@@ -184,14 +184,14 @@ export const McpX402Tab: React.FC<McpX402TabProps> = ({ config, lang }) => {
               </button>
             </div>
             <pre className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 p-3.5 font-mono text-[11px] leading-relaxed text-slate-300">
-{`# 1. Login to Cloudflare
+{`# Standalone MCP repo: github.com/Jettlin927/x402-mcp-agentcost
+git clone https://github.com/Jettlin927/x402-mcp-agentcost.git
+cd x402-mcp-agentcost && npm install
+
+# Login, set Base USDC wallet, and deploy to Cloudflare Workers
 npx wrangler login
-
-# 2. Set your Base USDC receiving wallet address
 npx wrangler secret put X402_PAY_TO
-
-# 3. Deploy Web App + /mcp x402 Edge Worker together
-npm run deploy:cf`}
+npm run deploy`}
             </pre>
             <p className="mt-2.5 text-[11px] text-slate-400">
               {lang === 'zh'
