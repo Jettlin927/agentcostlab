@@ -1,0 +1,71 @@
+name: 'AgentCostLab Prompt & MCP Linter'
+description: 'Catch PR prompt bloat, cache-busting timestamps, and leaked API keys in CLAUDE.md, AGENTS.md, and mcp.json before burning LLM budget.'
+author: 'Jett Lin (@Jettlin927)'
+branding:
+  icon: 'shield'
+  color: 'amber'
+
+inputs:
+  paths:
+    description: 'Space-separated files or directories to lint. Leave empty to auto-discover CLAUDE.md, AGENTS.md, .cursorrules, and mcp.json.'
+    required: false
+    default: ''
+  model:
+    description: 'Model pricing profile ID (e.g. claude-sonnet-5-5, gpt-6-2-sol, gemini-4-neon, deepseek-v4-pro-peak)'
+    required: false
+    default: 'claude-sonnet-5-5'
+  turns:
+    description: 'Simulated multi-turn loop length for 1,000-run token tax estimation'
+    required: false
+    default: '24'
+  max-tokens:
+    description: 'Optional total static prefix token budget; fails the step if exceeded'
+    required: false
+    default: ''
+  fail-on-high:
+    description: 'Fail the check when high-severity findings (cache-busters or leaked keys) are detected'
+    required: false
+    default: 'true'
+  format:
+    description: 'Output format: github | text | json'
+    required: false
+    default: 'github'
+
+outputs:
+  total-tokens:
+    description: 'Estimated total static prefix tokens across linted files'
+    value: ${{ steps.lint.outputs.total-tokens }}
+  high-warnings:
+    description: 'Count of high-severity findings'
+    value: ${{ steps.lint.outputs.high-warnings }}
+  medium-warnings:
+    description: 'Count of medium-severity findings'
+    value: ${{ steps.lint.outputs.medium-warnings }}
+  cost-1k-cached-usd:
+    description: 'Estimated 1,000-run static prefix cost with prompt caching (USD)'
+    value: ${{ steps.lint.outputs.cost-1k-cached-usd }}
+  cost-1k-uncached-usd:
+    description: 'Estimated 1,000-run static prefix cost without prompt caching (USD)'
+    value: ${{ steps.lint.outputs.cost-1k-uncached-usd }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run AgentCostLab Prompt & MCP Linter
+      id: lint
+      shell: bash
+      run: |
+        ARGS=(--model "${{ inputs.model }}" --turns "${{ inputs.turns }}" --format "${{ inputs.format }}")
+        if [ "${{ inputs.fail-on-high }}" = "true" ]; then
+          ARGS+=(--fail-on-high)
+        fi
+        if [ -n "${{ inputs.max-tokens }}" ]; then
+          ARGS+=(--max-tokens "${{ inputs.max-tokens }}")
+        fi
+        if [ -n "${{ inputs.paths }}" ]; then
+          # shellcheck disable=SC2206
+          TARGET_PATHS=(${{ inputs.paths }})
+          node "${{ github.action_path }}/bin/agentcost-lint.mjs" "${TARGET_PATHS[@]}" "${ARGS[@]}"
+        else
+          node "${{ github.action_path }}/bin/agentcost-lint.mjs" "${ARGS[@]}"
+        fi

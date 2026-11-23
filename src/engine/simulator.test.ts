@@ -80,7 +80,13 @@ describe('AgentCostLab Simulation Engine', () => {
 
   it('ranks all models by composite valueScore and identifies Pareto-optimal frontier', () => {
     const rows = compareAllModels(DEFAULT_CONFIG);
-    expect(rows.length).toBeGreaterThanOrEqual(15);
+    expect(rows.length).toBeGreaterThanOrEqual(20);
+    expect(rows.some((r) => r.model.id === 'gpt-6-1-terra')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'gemini-4-neon')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'gemini-4-hydrogen')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'qwen4-max')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'kimi-k3-1-pro')).toBe(true);
+    expect(getModelById('gpt-6-luna').inputPerM).toBe(0.1);
     for (let i = 1; i < rows.length; i++) {
       expect(rows[i].valueScore).toBeLessThanOrEqual(rows[i - 1].valueScore);
     }

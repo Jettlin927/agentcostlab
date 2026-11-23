@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Check, Coins, Copy, Play, ShieldCheck, Terminal, Zap } from 'lucide-react';
+import { MODELS } from '../data/models';
 import { compareAllModels, simulateAgentCost, type SimulationConfig } from '../engine/simulator';
 
 interface McpX402TabProps {
@@ -11,8 +12,8 @@ const TOOL_CATALOG = [
   {
     name: 'list_models_pricing',
     price: 'FREE',
-    descEn: 'Discovery tool: returns 15 models with Nov 2026 pricing, AA Intelligence & SWE-bench scores.',
-    descZh: '免费发现工具：返回 15 款主流模型 2026.11 定价、AA 智商指数与 SWE-bench 通过率。',
+    descEn: `Discovery tool: returns ${MODELS.length} models with Nov 2026 pricing, AA Intelligence & coding benchmarks.`,
+    descZh: `免费发现工具：返回 ${MODELS.length} 款主流模型 2026.11 定价、AA 智商指数与编程评测分。`,
   },
   {
     name: 'recommend_pareto_route',

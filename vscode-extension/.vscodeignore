@@ -1,0 +1,5 @@
+.vscode/**
+.vscode-test/**
+scripts/**
+extension.node-test.mjs
+*.vsix

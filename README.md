@@ -26,6 +26,26 @@ npm test
 npm run dev
 ```
 
+## CI Guardrail: `agentcost-lint` CLI & GitHub Action
+
+Catch bloated `CLAUDE.md` / `AGENTS.md` / `mcp.json` static prefixes, prompt-cache-busting timestamps, and leaked API keys directly in pull requests before they multiply your $O(N^2)$ agent bills:
+
+```bash
+# Auto-discover CLAUDE.md, AGENTS.md, .cursorrules, mcp.json in current repo
+node bin/agentcost-lint.mjs --model claude-sonnet-5-5 --turns 24 --fail-on-high --max-tokens 8000
+```
+
+Or drop the zero-dependency composite GitHub Action into `.github/workflows/agentcost-lint.yml`:
+
+```yaml
+- uses: Jettlin927/agentcostlab@main
+  with:
+    model: claude-sonnet-5-5
+    turns: 24
+    max-tokens: 8000
+    fail-on-high: true
+```
+
 ## Build & Deploy
 
 ### GitHub Pages (Automatic)

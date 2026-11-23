@@ -227,4 +227,44 @@ export const SEO_COMPARISONS: ComparisonPair[] = [
     description:
       'Simulate fast, low-cost agent loops comparing Gemini 3.8 Flash against DeepSeek V4.1 Flash with prompt caching enabled.',
   },
+  {
+    slug: 'gemini-4-neon-vs-claude-sonnet-5-5',
+    modelA: 'gemini-4-neon',
+    modelB: 'claude-sonnet-5-5',
+    title: 'Gemini 4 Neon vs Claude Sonnet 5.5 — Coding Agent Cost & Caching',
+    description:
+      'Compare Google Gemini 4 Neon ($3/$15, 95% cache hit discount) against Anthropic Claude Sonnet 5.5 ($2/$10) across multi-turn coding agent loops.',
+  },
+  {
+    slug: 'qwen4-max-vs-deepseek-v4-pro-peak',
+    modelA: 'qwen4-max',
+    modelB: 'deepseek-v4-pro-peak',
+    title: 'Qwen4-Max vs DeepSeek V4 Pro — High-Value Agent Loop Economics',
+    description:
+      'Compare Alibaba Qwen4-Max ($1.50/$4.50, 95% cached reads) against DeepSeek V4 Pro ($1.32/$3.96) for long-running autonomous agents.',
+  },
+  {
+    slug: 'gemini-4-hydrogen-vs-claude-sonnet-5-5',
+    modelA: 'gemini-4-hydrogen',
+    modelB: 'claude-sonnet-5-5',
+    title: 'Gemini 4 Hydrogen vs Claude Sonnet 5.5 — Coding Agent Cost & Speed',
+    description:
+      'Compare Google Gemini 4 Hydrogen ($1.50/$7.50, 95% cache discount, 164 tok/s) against Claude Sonnet 5.5 ($2/$10) across multi-turn agent loops.',
+  },
+  {
+    slug: 'gpt-6-1-terra-vs-gemini-4-hydrogen',
+    modelA: 'gpt-6-1-terra',
+    modelB: 'gemini-4-hydrogen',
+    title: 'GPT-6.1 Terra vs Gemini 4 Hydrogen — Mid-Tier Agent Cost & Caching',
+    description:
+      'Compare OpenAI GPT-6.1 Terra ($1/$5, $0.05 cached, 1.05M ctx) against Google Gemini 4 Hydrogen ($1.50/$7.50, 164 tok/s) on multi-turn agent loops.',
+  },
+  {
+    slug: 'kimi-k3-1-pro-vs-claude-sonnet-5-5',
+    modelA: 'kimi-k3-1-pro',
+    modelB: 'claude-sonnet-5-5',
+    title: 'Kimi K3.1 Pro vs Claude Sonnet 5.5 — Open-Weight vs Proprietary Agent Cost',
+    description:
+      'Compare Moonshot Kimi K3.1 Pro (Apache 2.0 2.8T MoE, $2/$10, $0.20 cached, 1M ctx) against Anthropic Claude Sonnet 5.5 ($2/$10, 1.25x cache write) across multi-turn agent loops.',
+  },
 ];

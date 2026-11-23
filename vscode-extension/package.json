@@ -1,0 +1,94 @@
+{
+  "name": "agentcost-lint",
+  "displayName": "AgentCostLab — CLAUDE.md & MCP Token Linter",
+  "description": "Live token counter, 1,000-run cost estimator, prompt cache-buster detector, and API key leak linter for CLAUDE.md, AGENTS.md, SKILL.md, .cursorrules, and mcp.json.",
+  "version": "0.1.0",
+  "publisher": "jettlin927",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jettlin927/agentcostlab"
+  },
+  "homepage": "https://jettlin927.github.io/agentcostlab/",
+  "bugs": {
+    "url": "https://github.com/Jettlin927/agentcostlab/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "claude",
+    "agents",
+    "mcp",
+    "prompt-caching",
+    "llm-cost",
+    "token-counter",
+    "cursorrules",
+    "ai"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.cjs",
+  "scripts": {
+    "sync-core": "node scripts/sync-core.mjs",
+    "vscode:prepublish": "node scripts/sync-core.mjs",
+    "test": "node scripts/sync-core.mjs && node --test extension.node-test.mjs"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "agentcostlab.inspectCurrentFile",
+        "title": "AgentCostLab: Inspect Prompt / MCP Token Tax"
+      },
+      {
+        "command": "agentcostlab.selectModel",
+        "title": "AgentCostLab: Select Pricing Model"
+      },
+      {
+        "command": "agentcostlab.openCalculator",
+        "title": "AgentCostLab: Open Web Cost Simulator"
+      }
+    ],
+    "configuration": {
+      "title": "AgentCostLab",
+      "properties": {
+        "agentcostlab.modelId": {
+          "type": "string",
+          "default": "claude-sonnet-5-5",
+          "enum": [
+            "claude-sonnet-5-5",
+            "claude-opus-5-5",
+            "claude-fable-5-2",
+            "claude-haiku-5-5",
+            "gpt-6-2-sol",
+            "gpt-6-2-astra",
+            "gpt-6-luna",
+            "gemini-4-carbon",
+            "gemini-4-neon",
+            "gemini-4-argon",
+            "deepseek-v4-pro-peak",
+            "deepseek-v4-1-flash-peak"
+          ],
+          "description": "Default LLM pricing model used to estimate 1,000-run static prefix tax."
+        },
+        "agentcostlab.turns": {
+          "type": "number",
+          "default": 24,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Average multi-turn agent loop count used for 1,000-run prefix cost estimates."
+        },
+        "agentcostlab.lintAllMarkdownAndJson": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, lint all Markdown and JSON files instead of only CLAUDE.md, AGENTS.md, SKILL.md, .cursorrules, and MCP configs."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+name: AgentCostLab Prompt & MCP Lint
+
+on:
+  pull_request:
+    paths:
+      - 'CLAUDE.md'
+      - 'AGENTS.md'
+      - '.cursorrules'
+      - 'mcp.json'
+      - '.mcp.json'
+      - 'bin/agentcost-lint.mjs'
+      - 'src/engine/promptLint.mjs'
+  workflow_dispatch:
+
+jobs:
+  lint-prompts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: ./
+        with:
+          model: 'claude-sonnet-5-5'
+          turns: '24'
+          fail-on-high: 'true'

@@ -260,7 +260,7 @@ export function App() {
             <p className="mt-2 text-sm leading-relaxed text-slate-400">
               {lang === 'zh'
                 ? 'AI Agent 每执行一轮工具调用，都会把历史上下文重新发送一遍，导致 Token 呈 O(N²) 平方级膨胀。实时模拟 Prompt Caching 缓存折扣、MCP 工具定义开销、长上下文阶梯涨价与“旗舰规划 + 经济执行”混合路由省钱方案。'
-                : 'Autonomous agents resend growing history + MCP tool schemas on every turn, creating O(N²) quadratic token growth. Simulate prompt caching, long-context step-ups, retries, and hybrid Planner/Worker model routing across 15 models.'}
+                : `Autonomous agents resend growing history + MCP tool schemas on every turn, creating O(N²) quadratic token growth. Simulate prompt caching, long-context step-ups, retries, and hybrid Planner/Worker model routing across ${MODELS.length} models.`}
             </p>
           </div>
 
