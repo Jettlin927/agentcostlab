@@ -17,6 +17,9 @@ const PROVIDER_COLORS: Record<ProviderId, string> = {
   deepseek: '#10b981', // emerald
   qwen: '#fb7185', // rose
   moonshot: '#22d3ee', // cyan
+  xai: '#f97316', // orange
+  zai: '#6366f1', // indigo
+  minimax: '#ec4899', // pink
   custom: '#94a3b8',
 };
 
@@ -284,8 +287,8 @@ export const ParetoScatterChart: React.FC<ParetoScatterChartProps> = ({
           )}
         </div>
 
-        <div className="flex items-center gap-3 text-[11px] text-slate-400">
-          {(['anthropic', 'openai', 'google', 'deepseek', 'qwen', 'moonshot'] as const).map((p) => (
+        <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+          {(['anthropic', 'openai', 'google', 'deepseek', 'qwen', 'moonshot', 'xai', 'zai', 'minimax'] as const).map((p) => (
             <span key={p} className="inline-flex items-center gap-1 capitalize">
               <span
                 className="inline-block h-2 w-2 rounded-full"

@@ -80,13 +80,21 @@ describe('AgentCostLab Simulation Engine', () => {
 
   it('ranks all models by composite valueScore and identifies Pareto-optimal frontier', () => {
     const rows = compareAllModels(DEFAULT_CONFIG);
-    expect(rows.length).toBeGreaterThanOrEqual(20);
+    expect(rows.length).toBeGreaterThanOrEqual(24);
     expect(rows.some((r) => r.model.id === 'gpt-6-1-terra')).toBe(true);
     expect(rows.some((r) => r.model.id === 'gemini-4-neon')).toBe(true);
     expect(rows.some((r) => r.model.id === 'gemini-4-hydrogen')).toBe(true);
     expect(rows.some((r) => r.model.id === 'qwen4-max')).toBe(true);
     expect(rows.some((r) => r.model.id === 'kimi-k3-1-pro')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'grok-4-7')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'glm-5-3')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'glm-5-3-flash')).toBe(true);
+    expect(rows.some((r) => r.model.id === 'minimax-m3')).toBe(true);
     expect(getModelById('gpt-6-luna').inputPerM).toBe(0.1);
+    expect(getModelById('claude-sonnet-5-5').cachedInputPerM).toBe(0.1);
+    expect(getModelById('claude-opus-5-5').cachedInputPerM).toBe(0.2);
+    expect(getModelById('claude-fable-5-2').cachedInputPerM).toBe(0.2);
+    expect(getModelById('claude-haiku-5-5').longContextMultiplier).toBe(5.0);
     for (let i = 1; i < rows.length; i++) {
       expect(rows[i].valueScore).toBeLessThanOrEqual(rows[i - 1].valueScore);
     }

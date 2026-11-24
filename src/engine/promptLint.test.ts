@@ -66,6 +66,24 @@ describe('promptLint batch engine', () => {
     expect(kimiModel.id).toBe('kimi-k3-1-pro');
     expect(kimiModel.inputPerM).toBe(2.0);
     expect(kimiModel.cachedInputPerM).toBe(0.2);
+
+    const minimaxModel = resolveLintModel('minimax-m3');
+    expect(minimaxModel.id).toBe('minimax-m3');
+    expect(minimaxModel.inputPerM).toBe(0.3);
+    expect(minimaxModel.cachedInputPerM).toBe(0.06);
+
+    const grokModel = resolveLintModel('grok-4-7');
+    expect(grokModel.id).toBe('grok-4-7');
+    expect(grokModel.inputPerM).toBe(2.0);
+
+    const glmModel = resolveLintModel('glm-5-3');
+    expect(glmModel.id).toBe('glm-5-3');
+    expect(glmModel.inputPerM).toBe(1.4);
+
+    const glmFlashModel = resolveLintModel('glm-5-3-flash');
+    expect(glmFlashModel.id).toBe('glm-5-3-flash');
+    expect(glmFlashModel.inputPerM).toBe(0.15);
+    expect(glmFlashModel.cachedInputPerM).toBe(0.03);
   });
 
   it('computes exact line and column spans for IDE diagnostics', () => {

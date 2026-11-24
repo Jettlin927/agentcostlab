@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "AgentCostLab — CLAUDE.md & MCP Token Linter",
+  "short_name": "AgentCostLab",
+  "version": "0.1.0",
+  "description": "Live token counter, 1,000-run prompt caching cost estimator, cache-buster detector, and secret leak linter for CLAUDE.md, AGENTS.md, SKILL.md, and mcp.json.",
+  "homepage_url": "https://jettlin927.github.io/agentcostlab/",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_title": "AgentCostLab Token & Cache Linter",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content-github.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["core/promptLint.mjs", "analyzer.mjs"],
+      "matches": ["https://github.com/*"]
+    }
+  ]
+}

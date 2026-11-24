@@ -67,12 +67,20 @@
             "claude-haiku-5-5",
             "gpt-6-2-sol",
             "gpt-6-2-astra",
+            "gpt-6-1-terra",
             "gpt-6-luna",
             "gemini-4-carbon",
             "gemini-4-neon",
             "gemini-4-argon",
+            "gemini-4-hydrogen",
             "deepseek-v4-pro-peak",
-            "deepseek-v4-1-flash-peak"
+            "deepseek-v4-1-flash-peak",
+            "qwen4-max",
+            "kimi-k3-1-pro",
+            "grok-4-7",
+            "glm-5-3",
+            "glm-5-3-flash",
+            "minimax-m3"
           ],
           "description": "Default LLM pricing model used to estimate 1,000-run static prefix tax."
         },

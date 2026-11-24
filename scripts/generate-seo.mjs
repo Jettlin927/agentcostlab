@@ -12,7 +12,7 @@ const PRESET_PAGES = [
     slug: 'coding-agent',
     title: 'Coding Agent (Claude Code / Cursor) Token & Prompt Caching Cost Calculator — AgentCostLab',
     description:
-      'Simulate a 24-turn AI coding agent loop with CLAUDE.md, 12 MCP tool schemas, file reads, and 85% prompt caching across 20 models.',
+      'Simulate a 24-turn AI coding agent loop with CLAUDE.md, 12 MCP tool schemas, file reads, and 85% prompt caching across 24 models.',
   },
   {
     slug: 'deep-research-agent',
@@ -112,6 +112,24 @@ const COMPARE_PAGES = [
     title: 'Kimi K3.1 Pro vs Claude Sonnet 5.5 — Open-Weight vs Proprietary Agent Cost',
     description:
       'Compare Moonshot Kimi K3.1 Pro (Apache 2.0 2.8T MoE, $2/$10, $0.20 cached, 1M ctx) against Anthropic Claude Sonnet 5.5 ($2/$10, 1.25x cache write) across multi-turn agent loops.',
+  },
+  {
+    slug: 'minimax-m3-vs-deepseek-v4-pro-peak',
+    title: 'MiniMax-M3 vs DeepSeek V4 Pro — High-Efficiency Agent Loop Economics',
+    description:
+      'Compare MiniMax-M3 ($0.30/$1.20, $0.06 cached, 1M ctx, SWE-bench 80.5%) against DeepSeek V4 Pro ($1.32/$3.96) across 24-turn coding agent loops.',
+  },
+  {
+    slug: 'grok-4-7-vs-claude-sonnet-5-5',
+    title: 'Grok 4.7 vs Claude Sonnet 5.5 — Multi-Turn Agent Cost & Long-Context Step-Up',
+    description:
+      'Compare xAI Grok 4.7 ($2/$6, $0.50 cached, 2x >=200k ctx) against Anthropic Claude Sonnet 5.5 ($2/$10, $0.20 cached) for multi-turn agent loops.',
+  },
+  {
+    slug: 'glm-5-3-flash-vs-deepseek-v4-1-flash-peak',
+    title: 'GLM-5.3-Flash vs DeepSeek V4.1 Flash — Ultra-Cheap 1M Agent Loop Cost',
+    description:
+      'Compare Z.ai GLM-5.3-Flash ($0.15/$0.50, $0.03 cached, 1M ctx, AA Index 57) against DeepSeek V4.1 Flash ($0.30/$1.20, $0.006 cached) for high-volume agent loops.',
   },
 ];
 
