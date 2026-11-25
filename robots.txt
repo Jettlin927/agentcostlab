@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jettlin927.github.io/agentcostlab/sitemap.xml
