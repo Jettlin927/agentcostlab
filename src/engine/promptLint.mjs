@@ -64,7 +64,7 @@ export const DEFAULT_LINT_MODELS = {
     id: 'gemini-4-carbon',
     name: 'Gemini 4 Carbon',
     inputPerM: 2.0,
-    cachedInputPerM: 0.2,
+    cachedInputPerM: 0.1,
     cacheWriteMultiplier: 1.0,
   },
   'gemini-4-neon': {
@@ -77,8 +77,8 @@ export const DEFAULT_LINT_MODELS = {
   'gemini-4-argon': {
     id: 'gemini-4-argon',
     name: 'Gemini 4 Argon',
-    inputPerM: 1.5,
-    cachedInputPerM: 0.15,
+    inputPerM: 2.0,
+    cachedInputPerM: 0.1,
     cacheWriteMultiplier: 1.0,
   },
   'gemini-4-hydrogen': {
@@ -142,6 +142,20 @@ export const DEFAULT_LINT_MODELS = {
     name: 'MiniMax-M3',
     inputPerM: 0.3,
     cachedInputPerM: 0.06,
+    cacheWriteMultiplier: 1.0,
+  },
+  'mistral-large-4': {
+    id: 'mistral-large-4',
+    name: 'Mistral Large 4',
+    inputPerM: 0.7,
+    cachedInputPerM: 0.07,
+    cacheWriteMultiplier: 1.0,
+  },
+  'mistral-small-4': {
+    id: 'mistral-small-4',
+    name: 'Mistral Small 4',
+    inputPerM: 0.15,
+    cachedInputPerM: 0.015,
     cacheWriteMultiplier: 1.0,
   },
 };
@@ -379,7 +393,7 @@ export function runLintBatch(files, options = {}) {
       : undefined;
 
   const results = files.map((file) => {
-    const inspection = inspectPromptOverhead(file.content, turns, model);
+    const inspection = findPromptDiagnosticSpans(file.content, turns, model);
     return {
       path: file.path,
       ...inspection,
@@ -470,23 +484,177 @@ export function renderMarkdownSummary(report) {
   return lines.join('\n');
 }
 
+const SARIF_RULES = [
+  {
+    id: 'cache-buster',
+    name: 'PromptCacheBuster',
+    shortDescription: { text: 'Dynamic variable in static prompt prefix breaks prompt caching' },
+    fullDescription: {
+      text: 'Dynamic expressions such as current_time, timestamp, Date.now, uuid, or random inside static agent instruction files invalidate prompt prefix caches on every turn.',
+    },
+    helpUri: 'https://jettlin927.github.io/agentcostlab/',
+    defaultConfiguration: { level: 'error' },
+    properties: { tags: ['performance', 'cost', 'prompt-caching'] },
+  },
+  {
+    id: 'secret-leak',
+    name: 'HardcodedSecretLeak',
+    shortDescription: { text: 'Potential API key or token hardcoded in agent prompt or MCP config' },
+    fullDescription: {
+      text: 'Hardcoded provider API keys or personal access tokens in CLAUDE.md, AGENTS.md, or mcp.json risk repository leakage and unauthorized LLM spend.',
+    },
+    helpUri: 'https://jettlin927.github.io/agentcostlab/',
+    defaultConfiguration: { level: 'error' },
+    properties: { tags: ['security', 'secrets'] },
+  },
+  {
+    id: 'malformed-json',
+    name: 'MalformedMcpJson',
+    shortDescription: { text: 'Invalid JSON syntax in MCP configuration file' },
+    fullDescription: {
+      text: 'The MCP configuration file failed JSON parsing, which can break tool discovery or silently disable server registrations.',
+    },
+    helpUri: 'https://jettlin927.github.io/agentcostlab/',
+    defaultConfiguration: { level: 'warning' },
+    properties: { tags: ['reliability', 'mcp'] },
+  },
+  {
+    id: 'heavy-prefix',
+    name: 'HeavyStaticPrefix',
+    shortDescription: { text: 'Static prompt or MCP schema prefix exceeds 8,000 tokens' },
+    fullDescription: {
+      text: 'Oversized static instruction prefixes and bloated MCP tool schemas multiply O(N^2) agent loop input costs across every turn.',
+    },
+    helpUri: 'https://jettlin927.github.io/agentcostlab/',
+    defaultConfiguration: { level: 'warning' },
+    properties: { tags: ['performance', 'cost'] },
+  },
+  {
+    id: 'token-budget',
+    name: 'StaticPrefixTokenBudgetExceeded',
+    shortDescription: { text: 'Total static prefix exceeds configured max-tokens budget' },
+    fullDescription: {
+      text: 'The combined estimated tokens across scanned agent prompt and MCP config files exceed the repository max-tokens guardrail.',
+    },
+    helpUri: 'https://jettlin927.github.io/agentcostlab/',
+    defaultConfiguration: { level: 'error' },
+    properties: { tags: ['performance', 'cost'] },
+  },
+];
+
+function severityToSarifLevel(severity) {
+  if (severity === 'high') return 'error';
+  if (severity === 'medium') return 'warning';
+  return 'note';
+}
+
 /**
- * Render human-readable CLI text or GitHub Actions workflow annotations.
+ * Render a SARIF 2.1.0 report for GitHub Code Scanning (`upload-sarif`).
  * @param {ReturnType<typeof runLintBatch>} report
- * @param {'text' | 'json' | 'github'} format
+ * @param {string} [toolVersion]
+ */
+export function renderSarifReport(report, toolVersion = '1.0.0') {
+  const sarifResults = [];
+
+  for (const r of report.results) {
+    const entries = r.spans && r.spans.length > 0 ? r.spans : r.warnings.map((w) => ({ line: 0, startCol: 0, endCol: 1, ...w }));
+    for (const entry of entries) {
+      const ruleId = entry.ruleId || 'heavy-prefix';
+      const startLine = (entry.line ?? 0) + 1;
+      const startColumn = (entry.startCol ?? 0) + 1;
+      const endColumn = Math.max(startColumn + 1, (entry.endCol ?? 1) + 1);
+      sarifResults.push({
+        ruleId,
+        level: severityToSarifLevel(entry.severity),
+        message: { text: entry.message },
+        locations: [
+          {
+            physicalLocation: {
+              artifactLocation: {
+                uri: r.path,
+                uriBaseId: '%SRCROOT%',
+              },
+              region: {
+                startLine,
+                startColumn,
+                endLine: startLine,
+                endColumn,
+              },
+            },
+          },
+        ],
+      });
+    }
+  }
+
+  if (report.budgetExceeded) {
+    const targetUri = report.results[0]?.path || 'CLAUDE.md';
+    sarifResults.push({
+      ruleId: 'token-budget',
+      level: 'error',
+      message: {
+        text: `Total static prefix (${report.totals.estimatedTokens} tokens) exceeds max-tokens budget (${report.maxTokens}).`,
+      },
+      locations: [
+        {
+          physicalLocation: {
+            artifactLocation: {
+              uri: targetUri,
+              uriBaseId: '%SRCROOT%',
+            },
+            region: {
+              startLine: 1,
+              startColumn: 1,
+              endLine: 1,
+              endColumn: 2,
+            },
+          },
+        },
+      ],
+    });
+  }
+
+  return {
+    $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+    version: '2.1.0',
+    runs: [
+      {
+        tool: {
+          driver: {
+            name: 'agentcost-lint',
+            informationUri: 'https://jettlin927.github.io/agentcostlab/',
+            version: toolVersion,
+            rules: SARIF_RULES,
+          },
+        },
+        results: sarifResults,
+      },
+    ],
+  };
+}
+
+/**
+ * Render human-readable CLI text, JSON, SARIF 2.1.0, or GitHub Actions workflow annotations.
+ * @param {ReturnType<typeof runLintBatch>} report
+ * @param {'text' | 'json' | 'github' | 'sarif'} format
  * @returns {string}
  */
 export function formatLintOutput(report, format = 'text') {
   if (format === 'json') {
     return JSON.stringify(report, null, 2);
   }
+  if (format === 'sarif') {
+    return JSON.stringify(renderSarifReport(report), null, 2);
+  }
 
   const lines = [];
   if (format === 'github') {
     for (const r of report.results) {
-      for (const w of r.warnings) {
+      const entries = r.spans && r.spans.length > 0 ? r.spans : r.warnings;
+      for (const w of entries) {
         const level = w.severity === 'high' ? 'error' : 'warning';
-        lines.push(`::${level} file=${r.path},title=agentcost-lint (${w.ruleId || w.severity})::${w.message}`);
+        const loc = typeof w.line === 'number' ? `,line=${w.line + 1},col=${(w.startCol ?? 0) + 1}` : '';
+        lines.push(`::${level} file=${r.path}${loc},title=agentcost-lint (${w.ruleId || w.severity})::${w.message}`);
       }
     }
     if (report.budgetExceeded) {

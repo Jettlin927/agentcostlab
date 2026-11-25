@@ -80,7 +80,9 @@
             "grok-4-7",
             "glm-5-3",
             "glm-5-3-flash",
-            "minimax-m3"
+            "minimax-m3",
+            "mistral-large-4",
+            "mistral-small-4"
           ],
           "description": "Default LLM pricing model used to estimate 1,000-run static prefix tax."
         },

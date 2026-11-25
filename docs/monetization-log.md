@@ -447,3 +447,243 @@
   - Ecosystem/Grants: x402 Foundation (Coinbase + Cloudflare), Cloudflare Agents SDK (`@x402/mcp`), Official MCP Registry (`registry.modelcontextprotocol.io`), and automated x402 discovery catalogs (`x402scan.com`, `x402.new`, `x402list.fun`) remain active.
 - **Top Next Step**:
   1. Locally run `npm test && git add -A && git commit -m "feat: sync 24 models, Anthropic cache pricing & Chrome extension" && git push` in `D:\agentcostlab`, and `npm run deploy` in both `D:\x402-mcp-agentcost` and `D:\x402-mcp-agentcost\sec-edgar-mcp` + `git add -A && git commit && git push`, then open `https://github.com/ai-boost/awesome-harness-engineering/compare/main...Jettlin927:awesome-harness-engineering:add-agentcostlab?expand=1` and submit to `TensorBlock/awesome-mcp-servers`.
+
+### 2026-11-24 22:00 (Main Branches Pushed + 2 New High-Velocity PRs Opened)
+- **GitHub `main` Pushed**:
+  - `Jettlin927/agentcostlab` (`a1854ed`, 24 models + Chrome extension + VS Code extension + CLI/Action)
+  - `Jettlin927/x402-mcp-agentcost` (`f2c5a00`, 24 models + SEC EDGAR Form 4 / EFTS / iXBRL 8-K excerpt endpoints)
+- **2 New High-Velocity Directory PRs Opened** (now **5** active distribution PRs total):
+  - `ai-boost/awesome-harness-engineering#475`: https://github.com/ai-boost/awesome-harness-engineering/pull/475
+  - `TensorBlock/awesome-mcp-servers#6796`: https://github.com/TensorBlock/awesome-mcp-servers/pull/6796
+- **Pending Retry When Network/Cloudflare API Settles**:
+  - `git -C D:\agentcostlab\dist push -f https://github.com/Jettlin927/agentcostlab.git gh-pages`
+  - `npm run deploy` in `D:\x402-mcp-agentcost` and `npx wrangler deploy` in `D:\x402-mcp-agentcost\sec-edgar-mcp`
+
+### 2026-11-24 23:46 (Cycle 20 — Track B Shipped: `get_sec_13f_holdings` Institutional 13F-HR XML Parser + Track A/C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T13:45:03Z`; live `gh-pages` `sitemap.xml` still serves 18 routes pending `dist` `gh-pages` push; `12968f9` ready locally in `D:\agentcostlab\dist`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`, `ce3fbfd` added Glama badge)
+  - Active Directory PRs (5 `OPEN`, `mergedAt: null`):
+    - `xpaysh/awesome-x402#2319`: `OPEN`
+    - `punkpeye/awesome-mcp-servers#20312`: `OPEN` (`check-submission` passed on `2026-11-24T15:14:22Z`; note `glama.ai/mcp/servers/Jettlin927/x402-mcp-agentcost` currently returns `not_found`, likely needs submission/Dockerfile on Glama)
+    - `yzfly/Awesome-MCP-ZH#1153`: `OPEN`
+    - `ai-boost/awesome-harness-engineering#475`: `OPEN` (`MERGEABLE`)
+    - `TensorBlock/awesome-mcp-servers#6796`: `OPEN` (`MERGEABLE`)
+  - Live Workers verified (`200 OK`):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}` (live `/llms.txt` still serves 20 LLMs pending `npm run deploy`)
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}` (live `/.well-known/x402.json` still serves 3 REST endpoints pending `wrangler deploy`)
+- **Track B Action Executed (High-Frequency Institutional 13F-HR Holdings Tool in `x402-mcp-sec-edgar`)**:
+  - Validated live SEC EDGAR `13F-HR` schemas (`data.sec.gov/submissions/CIK0001067983.json`, `index.json` discovery for `60471.xml`, and `efts.sec.gov/LATEST/search-index?forms=13F-HR&entityName=...` for private hedge fund manager lookup).
+  - Upgraded XML tag helpers in `D:\x402-mcp-agentcost\sec-edgar-mcp\src\edgar.ts` to support optional XML namespace prefixes (`ns1:infoTable`, etc.), added `parse13fInfoTableXml` + `consolidate13fRows` + `resolve13fManagerCik` + `get13fHoldings` (consolidates duplicate sub-account CUSIPs, separates `PUT`/`CALL`, preserves true portfolio `weightPct` under `issuerQuery`, computes `impliedPriceUsd`).
+  - Wired 8th MCP tool & 7th paid Bazaar-enabled x402 v2 REST endpoint `get_sec_13f_holdings` / `POST /api/sec-13f-holdings` (`$0.012 USDC`) in `src/index.ts`, plus synced `README.md`, `server.json`, and `src/edgar.test.ts` (+2 Vitest cases; updated `tools.length` to `8`).
+  - Verified:
+    - `npm --prefix D:\x402-mcp-agentcost\sec-edgar-mcp run typecheck` (`tsc --noEmit`): passed (0 errors).
+    - `npm --prefix D:\x402-mcp-agentcost run typecheck`: passed (0 errors).
+    - `wrangler deploy --config sec-edgar-mcp/wrangler.jsonc --dry-run`: bundled cleanly (`index.js` = 67,652 bytes).
+    - `node --test scratch/verify-13f.mjs` against bundled Worker: **3/3** passed (`8` tools, `7` REST routes, `server.json` valid, `402` `$0.012` Bazaar challenge, CUSIP consolidation + weight preservation).
+    - Live SEC EDGAR smoke test against `0001067983` (Berkshire Hathaway Q3 `2026-09-30` `13F-HR`, `60471.xml`) returned `200 OK`: consolidated `89` line items into `30` positions (`$304.20B` total; top 3 `APPLE INC` `24.95%`, `AMERICAN EXPRESS CO` `15.16%`, `COCA COLA CO` `11.32%`).
+    - *(Note: Vitest in sandbox hits Windows `EPERM realpath`; unattended `git push gh-pages` and `npm run deploy` blocked by permission policy — user to run locally.)*
+- **Track A & Track C Scan**:
+  - **AI Pricing / News (Nov 24, 2026)**: Confirmed Dec 1, 2026 `2x` price hike for Google **Gemini 4 Carbon & Argon** (`$2/$10 -> $4/$20`) is 7 days away (high-urgency hook for an X post); **Z.ai GLM-5.4** public pay-per-token API rate card remains pending official release.
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 updated open issues include `javelin-anticheat/py-workedtask#2` (`2026-11-24T15:25:58Z`, heavily flooded), `revertinc/revert#551` (`2026-11-24T15:22:55Z`, flooded), `madin-ll/bounty-pipeline-e2e-verify#1` (e2e test repo), `outerbase/starbasedb#71` (`💰 Rewarded`), `highlight/highlight#8032`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281`.
+  - **Grants/Ecosystem**: x402 Foundation (Coinbase + Cloudflare), Cloudflare Monetization Gateway + Agents SDK (`withX402Client`), and Cloudflare for Startups credits remain active.
+- **Top Next Step**:
+  1. Run locally to push all queued live updates: `git -C D:\agentcostlab\dist push -f https://github.com/Jettlin927/agentcostlab.git gh-pages`, then in `D:\x402-mcp-agentcost`: `npm test && npm run deploy` and `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc` + `git add -A && git commit -m "feat: add get_sec_13f_holdings (Form 13F-HR XML parser)" && git push`. Also submit `Jettlin927/x402-mcp-agentcost` at `https://glama.ai/mcp/servers` (currently 404) to clear `punkpeye/awesome-mcp-servers#20312`.
+
+### 2026-11-24 23:34 (All 3 Pending Deploys + Glama Listing Completed!)
+- `gh-pages` (`12968f9`): 24 models + 21 pSEO routes LIVE at https://jettlin927.github.io/agentcostlab/
+- `x402-mcp-agentcost` (`bf4502df`, 1 ms startup): 24 models + latest Anthropic cache pricing LIVE at https://x402-mcp-agentcost.jettlin666.workers.dev
+- `x402-mcp-sec-edgar` (`4373665c`, 1 ms startup): 7 tools / 6 paid REST endpoints (incl. Form 4, EFTS search, 8-K/10-K excerpt) LIVE at https://x402-mcp-sec-edgar.jettlin666.workers.dev
+- Glama listing submitted by user + Glama badge pushed (`ce3fbfd`) + `awesome-mcp-servers#20312` description updated.
+
+
+### 2026-11-25 02:36 (Cycle 21 — Track A Executed: Gemini 4 Carbon/Argon Pre-Dec-1 Pricing Sync + X Post Draft + Track B/C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`)
+  - Active Directory PRs (5 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312` (`check-submission` passed `2026-11-24T15:14:22Z`; Glama listing `https://glama.ai/mcp/servers/Jettlin927/x402-mcp-agentcost` & badge SVG verified `200 OK`), `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`, `TensorBlock/awesome-mcp-servers#6796`.
+  - Live Workers verified (`200 OK`):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}` (live `/llms.txt` serving 24 LLMs)
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}` (live `/.well-known/x402.json` serving 7 tools / 6 paid REST endpoints)
+- **Track A Action Executed (Verified `ai.google.dev` Pricing Fix Across Both Repos + X Draft)**:
+  - Audited Nov 24–25, 2026 official pricing & releases: confirmed `Z.ai GLM-5.4` (Loop Transformer, 1M ctx) remains Coding Plan-only with public API pricing "Coming Soon", and caught two inaccuracies on Google's **Gemini 4 Carbon & Argon** 6 days before their **Dec 1, 2026 2x hike** (`$2/$10/$0.10 cached` -> `$4/$20/$0.20 cached`):
+    - `gemini-4-argon`: corrected from stale `$1.50/$0.15/$7.50` to **`$2.00` input / `$0.10` cached (`95%` off) / `$10.00` output** through Nov 30, 2026 (with Dec 1 hike warning).
+    - `gemini-4-carbon`: corrected `cachedInputPerM` from `$0.20` to **`$0.10`** (`95%` off) through Nov 30, 2026.
+    - `gemini-3-8-flash`: added scheduled Jan 1, 2027 promo-expiry warning (`$0.75/$3.75` through Dec 31 -> `$1.50/$7.50` Jan 1).
+    - `presets.ts`: fixed `grok-4-7-vs-claude-sonnet-5-5` description (`$0.20 cached` -> `$0.10 cached`).
+  - Synced both `D:\agentcostlab` (`models.ts`, `promptLint.mjs`, `vscode-extension/core/promptLint.mjs`, `chrome-extension/core/promptLint.mjs`, `presets.ts`, `simulator.test.ts`, `promptLint.test.ts`) and `D:\x402-mcp-agentcost` (`src/models.ts`, `src/mcp.test.ts`).
+  - Verified after final edit:
+    - `D:\agentcostlab`: `npm test` passed **20/20** (`10/10` Vitest + `3/3` CLI Node + `2/2` VS Code + `5/5` Chrome extension); `npm run build` passed (**21** crawlable SEO routes, `sitemap.xml`, `robots.txt`, `404.html`); CLI check `node bin/agentcost-lint.mjs README.md --model gemini-4-argon --turns 24` passed (`1,129 tokens | $4.85/1k cached / $54.19 uncached`).
+    - `D:\x402-mcp-agentcost`: `npm run typecheck` passed; `npm test` passed **22/22** Vitest (`src/mcp.test.ts` 8/8 + `sec-edgar-mcp/src/edgar.test.ts` 14/14). *(Note: unsandboxed `npm --prefix D:\x402-mcp-agentcost run deploy` was denied by permission policy — user to deploy & push locally.)*
+  - Audited `hesreallyhim/awesome-claude-code` (58.7k★): `CONTRIBUTING.md` enforces `>=14 days old OR >=100 stars` + web UI form only (ineligible until early Dec 2026).
+  - Drafted timely X post riding the 6-day countdown to Google's Dec 1 Gemini 4 Carbon/Argon 2x rate hike.
+- **Track B & Track C Scan**:
+  - Track B: Verified Cycle 20's `get_sec_13f_holdings` suite passes (`14/14` in `sec-edgar-mcp/src/edgar.test.ts`), awaiting local `wrangler deploy` + commit/push.
+  - Track C Algora (`💎 Bounty`) top 8 updated: `madin-ll/bounty-pipeline-e2e-verify#1` (e2e test repo), `javelin-anticheat/py-workedtask#2`, `revertinc/revert#551`, `outerbase/starbasedb#71` (`💰 Rewarded`), `highlight/highlight#8032`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281` (Python Jira SM connector). Grants: x402 Foundation (Coinbase + Cloudflare) & Cloudflare for Startups ($350k credits) remain active.
+- **Top Next Step**:
+  1. Push & deploy locally: in `D:\agentcostlab` run `git add -A && git commit -m "fix: sync Gemini 4 Carbon/Argon pre-Dec-1 pricing" && git push` + `git -C D:\agentcostlab\dist push -f https://github.com/Jettlin927/agentcostlab.git gh-pages`; in `D:\x402-mcp-agentcost` run `npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc` + `git add -A && git commit -m "feat: sync Gemini 4 pricing + Form 13F-HR holdings endpoint" && git push`.
+
+
+### 2026-11-25 05:40 (Cycle 22 — Track A Executed: `awesome-remote-mcp-servers` Fork Branch + Glama Ownership `glama.json` + Track B/C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 watchers / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`; Cycle 21 local pricing edits awaiting commit/push)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 watchers / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`; Cycle 20–22 local edits awaiting test/deploy/push)
+  - Active Directory PRs (5 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`, `TensorBlock/awesome-mcp-servers#6796`.
+  - Live Workers verified (`200 OK` + unpaid `402` probes):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}` (`/.well-known/x402.json` serves 4 tools / 24 LLMs; all 3 `/api/*` routes return `402` to `0x0eddcb77a3f40925aec75456d7ae9445dddc5047`)
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}` (`/.well-known/x402.json` serves 7 tools / 6 paid REST routes; all 6 `/api/*` routes return `402` to `0x0eddcb77a3f40925aec75456d7ae9445dddc5047`)
+- **Track A Action Executed (Directory Distribution + Glama Ownership Claim)**:
+  - Audited 5 active MCP/x402 directories: `punkpeye/awesome-remote-mcp-servers` (3,983★; requires `glama.ai/mcp/connectors/...`, currently `404`), `kyrolabs/awesome-agents` (3,014★; auto-closes 0-star repos), `michielpost/x402-dev` (`x402dev.com`; gates PR auto-merge on a `0.25 USDC` `x402-gate` payment), `YourAITools` (`youraitools.co` / `api.youraitools.co/listing/v1/submit`, 525 listings, 0% fee — unattended `node` submit denied by permission policy), and **`jaw9c/awesome-remote-mcp-servers`** (1,200★, active PR reviews, zero Glama-connector/payment blocker).
+  - Forked `jaw9c/awesome-remote-mcp-servers` to `Jettlin927/awesome-remote-mcp-servers`, created branch `add-agentcostlab-x402-mcp` (`66ad715`), and committed clean `+1/-0` `README.md` entry (`43effcd`, verified `ahead_by: 1, behind_by: 0`) for `AgentCostLab` (`https://x402-mcp-agentcost.jettlin666.workers.dev/mcp`, `Open / x402`). Ready 1-click PR link (`gh pr create` denied by unattended permission policy): `https://github.com/jaw9c/awesome-remote-mcp-servers/compare/main...Jettlin927:awesome-remote-mcp-servers:add-agentcostlab-x402-mcp?expand=1`.
+  - Added official Glama ownership manifests (`D:\x402-mcp-agentcost\glama.json` and `D:\x402-mcp-agentcost\sec-edgar-mcp\glama.json` per `https://glama.ai/mcp/schemas/server.json`, `"maintainers": ["Jettlin927"]`) to claim repo ownership on Glama and reinforce `punkpeye/awesome-mcp-servers#20312`.
+  - Verified: `glama.json` JSON parsed cleanly, `npm --prefix D:\x402-mcp-agentcost run typecheck` and `npm --prefix D:\x402-mcp-agentcost\sec-edgar-mcp run typecheck` passed (0 errors); Vitest in sandbox hit Windows `EPERM realpath` on Vite import analysis.
+  - Audited Nov 24–25, 2026 LLM pricing & releases: `Z.ai GLM-5.4` (Loop Transformer, 1M ctx) remains Coding Plan-only with public API pricing pending; Cycle 21 rate cards remain current.
+- **Track B & Track C Scan**:
+  - **Track B**: Confirmed `YourAITools` Sell-your-API gateway (`https://api.youraitools.co/g/`, currently 0 listings, 0% cut, direct `payTo`) and `Official MCP Registry` (`registry.modelcontextprotocol.io`) remain zero-cost permissionless distribution channels for both `x402-mcp-agentcost` and `x402-mcp-sec-edgar` once executed interactively by user.
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 updated open issues: `madin-ll/bounty-pipeline-e2e-verify#1` (`💎 Bounty $50`, `2026-11-24T20:49:58Z`, e2e verify repo), `javelin-anticheat/py-workedtask#2`, `revertinc/revert#551`, `outerbase/starbasedb#71`, `highlight/highlight#8032`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281` (still unconfirmed $250 funding with 4+ competing `/attempt` comments).
+  - **Grants/Hackathons**: Avalanche *Hack2Build: Payments x402 edition* (into Dec 2026), x402 Foundation (Coinbase + Cloudflare), Cloudflare Agents SDK + Monetization Gateway, and Base/Solana/Algorand/Circle developer grants remain active.
+- **Top Next Step**:
+  1. Click `https://github.com/jaw9c/awesome-remote-mcp-servers/compare/main...Jettlin927:awesome-remote-mcp-servers:add-agentcostlab-x402-mcp?expand=1` to open the PR; locally run `npm test && npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc` + `git add -A && git commit && git push` in `D:\x402-mcp-agentcost` and `D:\agentcostlab` (also pushes `glama.json` + Cycle 20/21 updates), and submit `x402-mcp-agentcost` + `x402-mcp-sec-edgar` to `https://youraitools.co/submit` (0% cut).
+
+
+### 2026-11-25 08:39 (Cycle 23 — Track B Shipped: `agentcost-lint` SARIF 2.1.0 & Line-Accurate GitHub Code Scanning + Track A/C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`; Cycle 21 + Cycle 23 changes tested & built locally, awaiting `git commit && git push`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`; Cycle 20–22 local edits awaiting test/deploy/push)
+  - Active Directory PRs (5 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`, `TensorBlock/awesome-mcp-servers#6796`.
+  - Directory Discovery Audit: verified `jaw9c/awesome-remote-mcp-servers` has no PR opened yet from `Jettlin927:add-agentcostlab-x402-mcp` and its recent closed PRs (`#2757`, `#2633`, `#2625`, `#2561`, `#2544`) all closed with `merged_at: null`; identified **`Sagargupta16/awesome-mcp-servers`** (176★, `pushed_at: 2026-11-24T22:30:48Z`, actively merging PRs `#528–#533` including `Finance`) as a higher-conversion directory target.
+  - Live Workers verified (`200 OK` + unpaid `402` probes):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}` (`/.well-known/x402.json` serves 4 tools / 24 LLMs; `POST /api/simulate-agent-cost` returns `402` `$0.0050` to `0x0eddcb77a3f40925aec75456d7ae9445dddc5047`)
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}` (`/.well-known/x402.json` serves 7 tools / 6 paid REST endpoints; `POST /api/sec-financial-snapshot` returns `402` `$0.0100` to `0x0eddcb77a3f40925aec75456d7ae9445dddc5047`)
+- **Track B Action Executed (`agentcost-lint` SARIF 2.1.0 & GitHub Code Scanning Integration)**:
+  - Upgraded `D:\agentcostlab\src\engine\promptLint.mjs` (+ `src\engine\promptLint.d.mts`): switched `runLintBatch` to reuse `findPromptDiagnosticSpans` (zero duplication), added `SARIF_RULES` + `renderSarifReport` emitting **SARIF 2.1.0** diagnostics (`cache-buster`, `secret-leak`, `malformed-json`, `heavy-prefix`, `token-budget`) with 1-based `startLine`/`startColumn`/`endColumn` regions, added `--format sarif` support, and upgraded `--format github` workflow annotations with exact `line=` & `col=` locations.
+  - Extended `D:\agentcostlab\bin\agentcost-lint.mjs` (`--format sarif`, `--sarif-file <path>`, `sarif-file` in `GITHUB_OUTPUT`, and empty-scan SARIF support), `D:\agentcostlab\action.yml` (`sarif-file` input/output), and `D:\agentcostlab\README.md` (copy-paste `github/codeql-action/upload-sarif@v3` workflow snippet).
+  - Synced `vscode-extension/core/promptLint.mjs` and `chrome-extension/core/promptLint.mjs` via `sync-core.mjs`.
+  - Verified after final edit:
+    - `npx tsc -b D:\agentcostlab\tsconfig.json`: passed (0 errors).
+    - `npx vitest run`: **10/10** passed (`promptLint.test.ts` 3/3 + `simulator.test.ts` 7/7).
+    - Node test suites: `bin/agentcost-lint.node-test.mjs` (**4/4** passed), `vscode-extension/extension.node-test.mjs` (**2/2** passed), `chrome-extension/extension.node-test.mjs` (**5/5** passed).
+    - `npm run build`: passed (**21** crawlable SEO routes, `sitemap.xml`, `robots.txt`, `404.html`).
+    - CLI SARIF smoke test `node D:\agentcostlab\bin\agentcost-lint.mjs D:\agentcostlab\README.md --model claude-sonnet-5-5 --turns 24 --format sarif`: returned valid SARIF 2.1.0 JSON (`exitCode 0`).
+  - Also inspected `https://api.youraitools.co/listing/v1/submit/openapi.json` and staged verified submission payloads (`scratch/submit-agentcost.json` & `scratch/submit-sec-edgar.json`; live `curl.exe -X POST` submission denied by permission policy, ready for user's 1-line POST).
+- **Track A & Track C Scan**:
+  - **AI News / Pricing (Nov 25, 2026)**: Audited OpenAI, Anthropic, Google, DeepSeek, Mistral, and Z.ai — `Z.ai GLM-5.4` remains Coding Plan-only with public pay-per-token API rate card pending; Cycle 21 rate cards remain current.
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 updated open issues: `revertinc/revert#551` (`2026-11-24T23:47:39Z`), `highlight/highlight#8032` (`2026-11-24T23:39:07Z`), `madin-ll/bounty-pipeline-e2e-verify#1` (`2026-11-24T21:31:50Z`), `javelin-anticheat/py-workedtask#2` (`2026-11-24T15:25:58Z`), `outerbase/starbasedb#71` (`2026-11-24T10:17:09Z`), `lablab-ai/community-content#462` (`2026-11-24T09:28:27Z`), `limitlessprojects/Go-Hybrid#4617` (`2026-11-23T21:23:25Z`), `onyx-dot-app/onyx#2281` (`2026-11-23T06:59:37Z`).
+  - **Grants/Hackathons**: x402 Foundation (Coinbase + Cloudflare), Cloudflare Agents SDK + MCP, Avalanche *Hack2Build: Payments x402* ($25k pool), and Solana x402 ($20k pool) remain key ecosystem tracks.
+- **Top Next Step**:
+  1. Commit & push `D:\agentcostlab` (publishes SARIF 2.1.0 GitHub Action + Gemini 4 Carbon/Argon pre-Dec-1 pricing) and deploy & push `D:\x402-mcp-agentcost` (`npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc`), then submit both endpoints to `YourAITools` (`api.youraitools.co/listing/v1/submit`) and `Sagargupta16/awesome-mcp-servers` (active daily merges).
+
+
+### 2026-11-25 11:42 (Cycle 24 — Track B Shipped: Publishable Zero-Dep npm Package `agentcost-lint` + Root MIT `LICENSE` + Track A/C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`)
+  - Active Directory PRs (5 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`, `TensorBlock/awesome-mcp-servers#6796`.
+  - Live Workers verified (`200 OK`):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}` (and `POST /mcp` `initialize` returned `200 OK`, `agentcostlab-x402-mcp v1.0.0`)
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}`
+- **Track B Action Executed (Zero-Dependency `npx agentcost-lint` npm Package + Root `LICENSE`)**:
+  - Verified `https://registry.npmjs.org/agentcost-lint` returns `404` (name available on npm).
+  - Added root MIT `D:\agentcostlab\LICENSE` (required by open directories and npm) and fixed POSIX symlink resolution (`fs.realpathSync` in `isInvokedAsMain()`) inside `D:\agentcostlab\bin\agentcost-lint.mjs` so `npx agentcost-lint` and global installs run cleanly on Linux/macOS/CI.
+  - Created standalone, zero-dependency npm package `D:\agentcostlab\packages\agentcost-lint\` (`package.json`, `scripts/sync-core.mjs`, `README.md`, `package.node-test.mjs`), syncing `bin/agentcost-lint.mjs`, `src/engine/promptLint.mjs`, `src/engine/promptLint.d.mts`, and `LICENSE` directly from repo root (zero duplicated logic).
+  - Wired `packages/agentcost-lint` sync & tests into `D:\agentcostlab\package.json` (`test` script) and documented `npx agentcost-lint` in `D:\agentcostlab\README.md`.
+  - Verified:
+    - `npx tsc -b D:\agentcostlab\tsconfig.json`: passed (exit code `0`)
+    - Node test suites: `bin/agentcost-lint.node-test.mjs` (**4/4** passed), `packages/agentcost-lint/package.node-test.mjs` (**2/2** passed: byte parity + `--version 1.0.0` + 20 `--list-models` + SARIF 2.1.0), `vscode-extension/extension.node-test.mjs` (**2/2** passed), `chrome-extension/extension.node-test.mjs` (**5/5** passed).
+    - `npm pack --dry-run` in `D:\agentcostlab\packages\agentcost-lint`: clean **11.3 kB** tarball (**6** files, `0` runtime dependencies).
+    - *(Note: `vitest run` inside `npm test` hits Windows sandbox `EPERM realpath ...spy.js`; run `npm test && npm run build` locally before push/publish.)*
+- **Track A & Track C Scan**:
+  - **Directory Audit**: Verified `Sagargupta16/awesome-mcp-servers` (177★, `pushed_at: 2026-11-25T02:33:36Z`, auto-merges README-only PRs once starred + CI checks pass; `agentcost` not yet listed; `gh repo fork` / `gh api -X PUT user/starred` denied under unattended permission policy).
+  - **AI Pricing / News (Nov 25, 2026)**: Confirmed `Z.ai GLM-5.4` (750B Loop Transformer) remains in GLM Coding Plan with official pay-per-token Model API pending security assessment; Google's Dec 1 Gemini 4 Carbon/Argon 2x rate hike is 6 days away.
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 updated open issues: `revertinc/revert#551` (`2026-11-25T01:09:20Z`), `highlight/highlight#8032` (`2026-11-24T23:39:07Z`), `madin-ll/bounty-pipeline-e2e-verify#1` (`2026-11-24T21:31:50Z`), `javelin-anticheat/py-workedtask#2`, `outerbase/starbasedb#71`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281`.
+  - **Grants/Ecosystem**: x402 Foundation (Coinbase + Cloudflare), Cloudflare Agents SDK + Monetization Gateway, and ecosystem x402 tracks remain active.
+- **Top Next Step**:
+  1. Publish `agentcost-lint@1.0.0` to npm (`cd D:\agentcostlab\packages\agentcost-lint && npm publish --access public`), run `npm test && npm run build && git add -A && git commit && git push` in `D:\agentcostlab`, deploy & push `D:\x402-mcp-agentcost` + `sec-edgar-mcp`, and star + open the auto-merging PR to `Sagargupta16/awesome-mcp-servers`.
+
+
+### 2026-11-25 14:50 (Cycle 25 — Track B Shipped: Zero-Dep `--mcp` Stdio MCP Mode + `.pre-commit-hooks.yaml` for `agentcost-lint` & Track A/C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`; local Cycles 21/23/24/25 changes tested & built, awaiting `git commit && git push`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`; local Cycles 20–22 edits awaiting deploy/push)
+  - Active Directory PRs (5 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`, `TensorBlock/awesome-mcp-servers#6796`.
+  - Live Workers verified (`200 OK`):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}`
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}`
+- **Track B Action Executed (Offline Stdio MCP Server + `pre-commit` Hook Distribution)**:
+  - Upgraded `D:\agentcostlab\bin\agentcost-lint.mjs` with `--mcp` JSON-RPC 2.0 stdio MCP server mode (`MCP_TOOLS`, `handleMcpMessage`, `startMcpStdioServer`) exposing 3 zero-API-key local tools: `lint_prompt_text`, `lint_workspace_prompts`, and `list_lint_models` (reusing `runLintBatch`, `loadTargetFiles`, and `renderMarkdownSummary` with zero duplication).
+  - Created `D:\agentcostlab\.pre-commit-hooks.yaml` (`id: agentcost-lint`, `language: node`) so any repo using `pre-commit` can gate `CLAUDE.md` / `AGENTS.md` / `SKILL.md` / `.cursorrules` / `mcp.json` changes before commit.
+  - Updated `D:\agentcostlab\packages\agentcost-lint\README.md` and `D:\agentcostlab\README.md` with `mcp.json` (`npx -y agentcost-lint --mcp`) and `pre-commit` setup instructions, plus added unit & subprocess stdio MCP tests in `bin/agentcost-lint.node-test.mjs` and `packages/agentcost-lint/package.node-test.mjs`.
+  - Verified after final edit:
+    - `npm test` (`D:\agentcostlab`): **24/24** passed (**10/10** Vitest across `promptLint.test.ts` + `simulator.test.ts`, **5/5** CLI/MCP Node tests, **2/2** npm package tests incl. live `--mcp` stdio subprocess, **2/2** VS Code extension tests, **5/5** Chrome extension tests) and all `sync-core.mjs` scripts synced cleanly.
+    - `npm run build` (`D:\agentcostlab`): `tsc -b` + `vite build` + `generate-seo.mjs` passed (**21** crawlable SEO routes, `sitemap.xml`, `robots.txt`, `404.html`).
+    - `npm pack --dry-run` (`D:\agentcostlab\packages\agentcost-lint`): clean **13.4 kB** tarball (**6** files, `0` runtime dependencies).
+- **Track A & Track C Scan**:
+  - **Directory Audit (`Sagargupta16/awesome-mcp-servers`, 178★)**: Inspected `submission-check.yml`, `star-check.yml`, `auto-merge.yml`, and recent merges (`#534` on `2026-11-25`, `#533` Finance on `2026-11-24`) — confirmed `Jettlin927/x402-mcp-agentcost` meets all quality gates (0 star minimum, root `LICENSE` + `README.md` + TS impl); unattended `gh api -X PUT user/starred` & `gh repo fork` blocked by permission policy.
+  - **AI Pricing / News (Nov 25, 2026)**: Confirmed Cycle 21/24 model rate cards remain current (GPT-6.2 Astra/Sol, Claude Fable 5.2 / 5.5, Gemini 4 pre-Dec-1 rates, DeepSeek V4/V4.1, Qwen4-Max, GLM-5.3/5.3-Flash, MiniMax-M3).
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 updated open issues: `madin-ll/bounty-pipeline-e2e-verify#1` (`💎 Bounty $50`, `2026-11-25T06:08:42Z`, e2e verify repo), `revertinc/revert#551` (`2026-11-25T01:09:20Z`), `highlight/highlight#8032` (`2026-11-24T23:39:07Z`), `javelin-anticheat/py-workedtask#2`, `outerbase/starbasedb#71`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281`.
+  - **Grants/Ecosystem**: x402 Foundation (Coinbase + Cloudflare), Cloudflare Agents SDK (`withX402` / `withX402Client`) & Monetization Gateway developer programs remain active.
+- **Top Next Step**:
+  1. Commit & push `D:\agentcostlab` and `D:\x402-mcp-agentcost`, deploy both Cloudflare Workers (`npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc`), publish `D:\agentcostlab\packages\agentcost-lint` (`npm publish --access public`), and star + fork + open the auto-merging `Sagargupta16/awesome-mcp-servers` PR for `x402-mcp-agentcost`.
+
+
+### 2026-11-25 17:58 (Cycle 26 — Milestone: `TensorBlock#6796` Merged + Track A Executed: Mistral AI Provider (`Mistral Large 4` & `Small 4`) Synced to 26 Models + 23 pSEO Routes + Track C Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`)
+  - Directory PRs:
+    - **`TensorBlock/awesome-mcp-servers#6796`: `MERGED` (`2026-11-25T09:10:33Z`)** — first major MCP directory merge achieved (1.1k+★ repo feeding `tensorblock.co/mcp`).
+    - `xpaysh/awesome-x402#2319`: `OPEN` (`mergedAt: null`)
+    - `punkpeye/awesome-mcp-servers#20312`: `OPEN` (`mergedAt: null`)
+    - `yzfly/Awesome-MCP-ZH#1153`: `OPEN` (`mergedAt: null`)
+    - `ai-boost/awesome-harness-engineering#475`: `OPEN` (`mergedAt: null`)
+  - Live Workers verified:
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}` (serves 24 LLMs via `/.well-known/x402.json` & `/llms.txt`; `POST /api/simulate-agent-cost` returns `402` `$0.0050` to `0x0eddcb77a3f40925aec75456d7ae9445dddc5047`).
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}` (`POST /api/sec-financial-snapshot` returns `402` `$0.0100` to `0x0eddcb77a3f40925aec75456d7ae9445dddc5047`; `/llms.txt` lists 6 paid REST endpoints + 1 free tool).
+- **Track A Action Executed (10th Provider `Mistral AI` + 26 Models + 23 pSEO Routes + X Draft + YourAITools Payloads)**:
+  - Verified Nov 2026 Mistral AI API pricing & Artificial Analysis benchmarks and added `'mistral'` (`#eab308` yellow in `ParetoScatterChart.tsx`) + 2 models across both `D:\agentcostlab` and `D:\x402-mcp-agentcost` (**24 -> 26 models across 10 providers**; **20 -> 22 lint models**):
+    - **Mistral Large 4** (`mistral-large-4`): `$0.70` input / `$0.07` cached (`90%` off, `64`-tok min, `1.0x` write; `$1.36/$4.18` list) / `$2.10` output per 1M, `1M` ctx, AA Index `26`, Coding Agent `48%`, DeepSWE v1.1 `61.7%`, `116 tok/s` (`116.1 tok/s` AA).
+    - **Mistral Small 4** (`mistral-small-4`): `$0.15` input / `$0.015` cached (`90%` off) / `$0.60` output per 1M, `256k` ctx, AA Index `12`, Terminal-Bench Hard `17.4%`, `150 tok/s`.
+  - Updated `D:\agentcostlab` (`models.ts`, `ParetoScatterChart.tsx`, `promptLint.mjs`, `presets.ts`, `scripts/generate-seo.mjs` adding `mistral-large-4-vs-deepseek-v4-pro-peak` & `mistral-small-4-vs-gemini-3-5-flash-lite` + fixing stale `$0.20 -> $0.10` cached note in `grok-4-7-vs-claude-sonnet-5-5`, `vscode-extension/package.json`, `simulator.test.ts`, `promptLint.test.ts`, `bin/agentcost-lint.node-test.mjs`, `packages/agentcost-lint/package.node-test.mjs`, `README.md`, `packages/agentcost-lint/README.md`, `chrome-extension/README.md`) and `D:\x402-mcp-agentcost` (`src/models.ts`, `src/mcp.test.ts`, `server.json`, `README.md`).
+  - Staged verified `YourAITools` (`api.youraitools.co/listing/v1/submit`, 0% cut, `/g/` currently has `0` listings) JSON payloads in conversation scratch (`submit-agentcost.json`, `submit-sec-edgar.json`); live `curl.exe -X POST` and `npm run deploy` blocked by unattended permission policy.
+  - Drafted timely X post riding `TensorBlock/awesome-mcp-servers#6796` merge + Mistral Large 4 `$0.07/M` cached 1M MoE addition + 6-day countdown to Google's Dec 1 Gemini 4 Carbon/Argon 2x price hike.
+  - Verified:
+    - `D:\x402-mcp-agentcost`: `npm run typecheck` (`tsc --noEmit`) passed; `npm test` (Vitest) passed **22/22** (`src/mcp.test.ts` 8/8 + `sec-edgar-mcp/src/edgar.test.ts` 14/14).
+    - `D:\agentcostlab`: `npm run build` (`tsc -b && vite build && node scripts/generate-seo.mjs`) passed (**23** crawlable SEO routes, `sitemap.xml`, `robots.txt`, `404.html`); all 3 `sync-core.mjs` scripts synced cleanly; Node test suites passed **14/14** (`bin/agentcost-lint.node-test.mjs` **5/5**, `packages/agentcost-lint/package.node-test.mjs` **2/2**, `vscode-extension/extension.node-test.mjs` **2/2**, `chrome-extension/extension.node-test.mjs` **5/5**); CLI smoke test `node bin/agentcost-lint.mjs README.md --model mistral-large-4 --turns 24` verified (`1,264 tokens | $2.92 cached / $21.24 uncached`). *(Note: `D:\agentcostlab` Vitest suite blocked by sandbox `EPERM realpath` & unattended permission policy — run `npm test` locally before push.)*
+- **Track B & Track C Scan**:
+  - **Track B**: Confirmed `packages/agentcost-lint` (`--mcp` stdio, SARIF 2.1.0, `.pre-commit-hooks.yaml`), `vscode-extension/`, `chrome-extension/`, and `sec-edgar-mcp/` (`13F-HR` + Form 4 + EFTS + 8-K/10-K Excerpt) are staged locally awaiting push/deploy/npm publish.
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 updated open issues unchanged from Cycle 25: `madin-ll/bounty-pipeline-e2e-verify#1` (`💎 Bounty $50`, `2026-11-25T06:08:42Z`, e2e verify repo), `revertinc/revert#551` (`2026-11-25T01:09:20Z`), `highlight/highlight#8032` (`2026-11-24T23:39:07Z`), `javelin-anticheat/py-workedtask#2` (`2026-11-24T15:25:58Z`), `outerbase/starbasedb#71` (`2026-11-24T10:17:09Z`), `lablab-ai/community-content#462` (`2026-11-24T09:28:27Z`), `limitlessprojects/Go-Hybrid#4617` (`2026-11-23T21:23:25Z`), `onyx-dot-app/onyx#2281` (`2026-11-23T06:59:37Z`).
+  - **Grants/Hackathons**: Cloudflare Agents SDK + Monetization Gateway (`x402`), x402 Foundation (Coinbase + Cloudflare), and Cloudflare WebMCP/agentic builder programs remain active for TypeScript/Python remote MCP servers.
+- **Top Next Step**:
+  1. Commit & push `D:\agentcostlab` (after local `npm test`) and `D:\x402-mcp-agentcost`, deploy both Cloudflare Workers (`npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc`), publish `packages/agentcost-lint` (`npm publish --access public`), and POST the staged `YourAITools` (`api.youraitools.co/listing/v1/submit`) listings + open the `Sagargupta16/awesome-mcp-servers` auto-merging PR.
+
+
+### 2026-11-25 20:51 (Cycle 27 — Track A/B Critical Fix: Base Mainnet `PayAI` Facilitator + x402 v2 `PaymentPayload` Object Decoding + Directory/Bounty Scan)
+- **Live Health & Stats**:
+  - `Jettlin927/agentcostlab`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:33:42Z`; local Cycles 21/23–26 edits awaiting local `npm test` + `git commit && git push`)
+  - `Jettlin927/x402-mcp-agentcost`: 0 stars / 0 forks / 0 open issues (`pushed_at: 2026-11-24T15:14:02Z`; local Cycles 20–27 edits awaiting `npm test` + `npm run deploy` + `git push`)
+  - Directory PRs:
+    - `TensorBlock/awesome-mcp-servers#6796`: `MERGED` (`2026-11-25T09:10:33Z`)
+    - `xpaysh/awesome-x402#2319`: `OPEN` (`mergedAt: null`)
+    - `punkpeye/awesome-mcp-servers#20312`: `OPEN` (`mergedAt: null`)
+    - `yzfly/Awesome-MCP-ZH#1153`: `OPEN` (`mergedAt: null`)
+    - `ai-boost/awesome-harness-engineering#475`: `OPEN` (`mergedAt: null`)
+  - Live Workers verified (`200 OK` + live `402` header probe):
+    - `https://x402-mcp-agentcost.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-agentcost"}`
+    - `https://x402-mcp-sec-edgar.jettlin666.workers.dev/health` -> `{"ok":true,"service":"x402-mcp-sec-edgar"}`
+- **Concrete Action Executed (Critical Revenue-Blocker Fix for Live Base Mainnet USDC Settlement)**:
+  - Audited live facilitator capabilities via `/supported`: proved `https://x402.org/facilitator` **only supports testnets (`eip155:84532` Base Sepolia, etc.)** and does NOT support Base Mainnet (`eip155:8453`) or `bazaar`, whereas **`https://facilitator.payai.network`** supports keyless **Base Mainnet (`eip155:8453`) x402 v2 `exact` + `bazaar`**.
+  - Audited live x402 v2 wire format (`@x402/core` + PayAI `/verify`): found `verifyAndSettleX402` in `D:\x402-mcp-agentcost\src\x402.ts` (shared by both Workers) was forwarding the raw Base64 `PAYMENT-SIGNATURE` string instead of the decoded JSON `PaymentPayload` object.
+  - Fixed `D:\x402-mcp-agentcost\src\x402.ts`, `D:\x402-mcp-agentcost\wrangler.jsonc`, and `D:\x402-mcp-agentcost\sec-edgar-mcp\wrangler.jsonc`:
+    1. Switched `DEFAULT_FACILITATOR` and both `wrangler.jsonc` `X402_FACILITATOR_URL` vars from `https://x402.org/facilitator` to `https://facilitator.payai.network`.
+    2. Updated `verifyAndSettleX402` to decode Base64-encoded JSON (or raw JSON) `PAYMENT-SIGNATURE` / `X-PAYMENT` into a `PaymentPayload` object, reject malformed headers with `402` before calling the facilitator, and added `assetTransferMethod: 'eip3009'` to `accepts[0].extra`.
+  - Updated `D:\x402-mcp-agentcost\src\mcp.test.ts` (+ malformed-header rejection test) and `D:\x402-mcp-agentcost\sec-edgar-mcp\src\edgar.test.ts` to enforce Base64-decoded JSON object payloads and `facilitator.payai.network` URLs.
+  - Verified:
+    - `npm --prefix D:\x402-mcp-agentcost run typecheck` (`tsc --noEmit`) & `sec-edgar-mcp` `typecheck`: passed (0 errors).
+    - `wrangler deploy --dry-run`: both Workers bundled cleanly (`x402-mcp-agentcost` `55.72 KiB` / gzip `13.79 KiB`; `x402-mcp-sec-edgar` `66.94 KiB` / gzip `16.58 KiB`).
+    - `node --test` against compiled Worker bundles: **4/4** passed (EIP-3009 `402` + 26 models, malformed `PAYMENT-SIGNATURE` rejection, PayAI `/verify` & `/settle` object decoding, and `sec-edgar` 8 tools + PayAI `/verify`). *(Vitest in sandbox hit Windows `EPERM realpath` — run `npm test` locally before `npm run deploy`.)*
+- **Track A & Track C Intelligence**:
+  - **x402 Directories Discovered**: Verified neither `agentcost` nor `sec-edgar` is listed on **`x402-list.com`** (`1,451` services, `$326,935` 30d USDC volume; `workers.dev` submission costs `$1.00`) or **`nohumans.directory`** (where `edgar.apitoll.cloud` shows `39` unique 30d buyers; `/mcp` paths list **free** on `nohumans.directory` via `POST /v1/listings`, and `POST /v1/check` validates for free); **`Sagargupta16/awesome-mcp-servers`** (181★) actively merged `#534–#538` on `2026-11-25` incl. hosted Cloudflare Workers MCPs.
+  - **LLM Pricing Check (Nov 25, 2026)**: Audited OpenAI, Anthropic, Google, DeepSeek, xAI (`Grok 4.7` `$2/$6` / `$0.50` cached / `2x` >=200k), Z.ai (`GLM-5.4` still Coding Plan-only, pay-per-token API pending), and Mistral — Cycle 26 26-model catalog remains current.
+  - **Track C Live Algora (`💎 Bounty`)**: Top 8 open issues unchanged from Cycle 26 (`madin-ll/bounty-pipeline-e2e-verify#1` updated `2026-11-25T11:13:07Z`, `revertinc/revert#551`, `highlight/highlight#8032`, `javelin-anticheat/py-workedtask#2`, `outerbase/starbasedb#71`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281`). Grants: Cloudflare Agents SDK + Monetization Gateway (`x402`) and x402 Foundation remain active.
+- **Top Next Step**:
+  1. **Deploy both fixed Workers immediately** (unlocks real Base Mainnet USDC settlement!): in `D:\x402-mcp-agentcost` run `npm test && npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc` + `git add -A && git commit -m "fix: switch to Base Mainnet PayAI facilitator and decode x402 v2 PaymentPayload" && git push`, and in `D:\agentcostlab` run `npm test && npm run build && git add -A && git commit && git push`; then submit both `/mcp` endpoints (free) to `nohumans.directory` and open the `Sagargupta16/awesome-mcp-servers` PR.

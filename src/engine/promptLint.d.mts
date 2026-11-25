@@ -34,7 +34,7 @@ export interface PromptDiagnosticResult extends PromptInspectionResult {
   spans: PromptDiagnosticSpan[];
 }
 
-export interface FileLintResult extends PromptInspectionResult {
+export interface FileLintResult extends PromptDiagnosticResult {
   path: string;
 }
 
@@ -85,7 +85,8 @@ export declare function runLintBatch(
   options?: LintBatchOptions
 ): LintBatchReport;
 export declare function renderMarkdownSummary(report: LintBatchReport): string;
+export declare function renderSarifReport(report: LintBatchReport, toolVersion?: string): Record<string, unknown>;
 export declare function formatLintOutput(
   report: LintBatchReport,
-  format?: 'text' | 'json' | 'github'
+  format?: 'text' | 'json' | 'github' | 'sarif'
 ): string;

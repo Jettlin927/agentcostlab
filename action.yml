@@ -27,9 +27,13 @@ inputs:
     required: false
     default: 'true'
   format:
-    description: 'Output format: github | text | json'
+    description: 'Output format: github | text | json | sarif'
     required: false
     default: 'github'
+  sarif-file:
+    description: 'Optional output path to write SARIF 2.1.0 report for GitHub Code Scanning (upload-sarif)'
+    required: false
+    default: ''
 
 outputs:
   total-tokens:
@@ -47,6 +51,9 @@ outputs:
   cost-1k-uncached-usd:
     description: 'Estimated 1,000-run static prefix cost without prompt caching (USD)'
     value: ${{ steps.lint.outputs.cost-1k-uncached-usd }}
+  sarif-file:
+    description: 'Path to the generated SARIF 2.1.0 report (when sarif-file input is set)'
+    value: ${{ steps.lint.outputs.sarif-file }}
 
 runs:
   using: 'composite'
@@ -61,6 +68,9 @@ runs:
         fi
         if [ -n "${{ inputs.max-tokens }}" ]; then
           ARGS+=(--max-tokens "${{ inputs.max-tokens }}")
+        fi
+        if [ -n "${{ inputs.sarif-file }}" ]; then
+          ARGS+=(--sarif-file "${{ inputs.sarif-file }}")
         fi
         if [ -n "${{ inputs.paths }}" ]; then
           # shellcheck disable=SC2206

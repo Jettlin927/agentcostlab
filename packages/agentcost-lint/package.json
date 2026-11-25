@@ -1,0 +1,52 @@
+{
+  "name": "agentcost-lint",
+  "version": "1.0.0",
+  "description": "Zero-dependency CLI & SARIF 2.1.0 linter for CLAUDE.md, AGENTS.md, .cursorrules, and mcp.json token tax, cache-busters, and leaked API keys.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jett Lin <Jettlin927@users.noreply.github.com>",
+  "homepage": "https://jettlin927.github.io/agentcostlab/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jettlin927/agentcostlab.git",
+    "directory": "packages/agentcost-lint"
+  },
+  "bugs": {
+    "url": "https://github.com/Jettlin927/agentcostlab/issues"
+  },
+  "keywords": [
+    "ai-agents",
+    "mcp",
+    "claude",
+    "prompt-caching",
+    "llm-cost",
+    "finops",
+    "sarif",
+    "linter",
+    "claude-md",
+    "agents-md"
+  ],
+  "bin": {
+    "agentcost-lint": "./bin/agentcost-lint.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/engine/promptLint.d.mts",
+      "default": "./src/engine/promptLint.mjs"
+    }
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "sync-core": "node scripts/sync-core.mjs",
+    "prepack": "node scripts/sync-core.mjs",
+    "test": "node scripts/sync-core.mjs && node --test package.node-test.mjs"
+  }
+}

@@ -13,7 +13,7 @@ Live Demo: **https://jettlin927.github.io/agentcostlab/**
 - **Hybrid Planner / Worker Routing**: Compare running every turn on a Frontier model vs routing Turn 1 + periodic planning turns to a Frontier model and tool-execution turns to an Economy worker.
 - **CLAUDE.md / AGENTS.md / MCP Schema Inspector**: 100% client-side token estimator + static linter that catches hardcoded API keys and cache-busting timestamps, then calculates the 1,000-run "token tax" of your file.
 - **Capability × Cost Pareto Leaderboard**: Combines Artificial Analysis Intelligence Index, SWE-bench Verified pass rates, and your exact multi-turn loop cost to plot the live **Pareto Frontier**, compute **Cost per Solved Task** (`perRunCost / passRate`), and rank models by composite **Value Score**.
-- **24 Models (Nov 2026 API Pricing)**: OpenAI (GPT-6.2 Astra / Sol / 6.1 Terra / 6 Luna), Anthropic (Claude Fable 5.2 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5), Google (Gemini 4 Neon / Carbon / Argon / Hydrogen / 3.8 Flash / 3.5 Flash-Lite), DeepSeek (V4 Pro & V4.1 Flash Peak/Off-Peak), Alibaba Qwen (Qwen4-Max), Moonshot AI (Kimi K3.1 Pro), xAI (Grok 4.7), Z.ai (GLM-5.3 / 5.3-Flash), and MiniMax (MiniMax-M3).
+- **26 Models (Nov 2026 API Pricing)**: OpenAI (GPT-6.2 Astra / Sol / 6.1 Terra / 6 Luna), Anthropic (Claude Fable 5.2 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5), Google (Gemini 4 Neon / Carbon / Argon / Hydrogen / 3.8 Flash / 3.5 Flash-Lite), DeepSeek (V4 Pro & V4.1 Flash Peak/Off-Peak), Alibaba Qwen (Qwen4-Max), Moonshot AI (Kimi K3.1 Pro), xAI (Grok 4.7), Z.ai (GLM-5.3 / 5.3-Flash), MiniMax (MiniMax-M3), and Mistral AI (Mistral Large 4 / Small 4).
 - **Pay-Per-Call x402 MCP Server (`worker/`)**: Cloudflare Workers Streamable HTTP MCP server (`/mcp` + `/.well-known/mcp.json`) with free `tools/list` discovery and **x402 v2 (`HTTP 402 Payment Required` / Base USDC)** micropayment gating on `simulate_agent_cost`, `recommend_pareto_route`, and `audit_prompt_cache_tax`.
 - **Programmatic SEO (pSEO) Built-In**: Post-build script emits static crawlable HTML routes for preset scenarios and head-to-head comparisons, plus `sitemap.xml`, `robots.txt`, and `404.html`.
 - **Shareable URLs & RFC Exports**: Every slider syncs to URL query parameters; one-click copy Markdown budget table or export CSV.
@@ -31,11 +31,17 @@ npm run dev
 Catch bloated `CLAUDE.md` / `AGENTS.md` / `mcp.json` static prefixes, prompt-cache-busting timestamps, and leaked API keys directly in pull requests before they multiply your $O(N^2)$ agent bills:
 
 ```bash
-# Auto-discover CLAUDE.md, AGENTS.md, .cursorrules, mcp.json in current repo
+# Auto-discover CLAUDE.md, AGENTS.md, .cursorrules, mcp.json in current repo (zero-dep npm CLI)
+npx agentcost-lint --model claude-sonnet-5-5 --turns 24 --fail-on-high --max-tokens 8000
+
+# Or start the zero-dep local stdio MCP server (lint_prompt_text, lint_workspace_prompts, list_lint_models)
+npx -y agentcost-lint --mcp
+
+# Or run from this repo directly
 node bin/agentcost-lint.mjs --model claude-sonnet-5-5 --turns 24 --fail-on-high --max-tokens 8000
 ```
 
-Or drop the zero-dependency composite GitHub Action into `.github/workflows/agentcost-lint.yml`:
+Supports GitHub Actions (with SARIF 2.1.0 Code Scanning) and [`pre-commit`](.pre-commit-hooks.yaml) (`id: agentcost-lint`):
 
 ```yaml
 - uses: Jettlin927/agentcostlab@main
@@ -44,6 +50,12 @@ Or drop the zero-dependency composite GitHub Action into `.github/workflows/agen
     turns: 24
     max-tokens: 8000
     fail-on-high: true
+    sarif-file: agentcost-lint.sarif
+
+- uses: github/codeql-action/upload-sarif@v3
+  if: always()
+  with:
+    sarif_file: agentcost-lint.sarif
 ```
 
 ## Browser & IDE Extensions

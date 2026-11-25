@@ -5,7 +5,7 @@ Zero-telemetry Manifest V3 browser extension that surfaces live token counts, 1,
 ## Features
 
 - **Automatic GitHub File Badge**: Displays a floating bottom-right cost & lint badge on GitHub blob pages for agent instruction files and MCP configs.
-- **Instant Popup Linter**: Auto-loads the active GitHub file or lets you paste any prompt / `mcp.json` and compare 1,000-run cached vs. uncached cost across 19 Nov-2026 LLM pricing profiles (`Claude Sonnet 5.5`, `GPT-6.2 Sol`, `Gemini 4 Neon`, `DeepSeek V4 Pro`, `Qwen4-Max`, `Kimi K3.1 Pro`, `MiniMax-M3`, etc.).
+- **Instant Popup Linter**: Auto-loads the active GitHub file or lets you paste any prompt / `mcp.json` and compare 1,000-run cached vs. uncached cost across 22 Nov-2026 LLM pricing profiles (`Claude Sonnet 5.5`, `GPT-6.2 Sol`, `Gemini 4 Neon`, `DeepSeek V4 Pro`, `Qwen4-Max`, `Kimi K3.1 Pro`, `MiniMax-M3`, `Mistral Large 4`, etc.).
 - **100% Client-Side & Private**: No telemetry, no external API calls, and minimal permissions (`activeTab`, `storage`).
 
 ## Load Unpacked (Chrome / Edge / Brave)

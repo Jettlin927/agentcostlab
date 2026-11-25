@@ -281,7 +281,7 @@ export const SEO_COMPARISONS: ComparisonPair[] = [
     modelB: 'claude-sonnet-5-5',
     title: 'Grok 4.7 vs Claude Sonnet 5.5 — Multi-Turn Agent Cost & Long-Context Step-Up',
     description:
-      'Compare xAI Grok 4.7 ($2/$6, $0.50 cached, 2x >=200k ctx) against Anthropic Claude Sonnet 5.5 ($2/$10, $0.20 cached) for multi-turn agent loops.',
+      'Compare xAI Grok 4.7 ($2/$6, $0.50 cached, 2x >=200k ctx) against Anthropic Claude Sonnet 5.5 ($2/$10, $0.10 cached) for multi-turn agent loops.',
   },
   {
     slug: 'glm-5-3-flash-vs-deepseek-v4-1-flash-peak',
@@ -290,5 +290,21 @@ export const SEO_COMPARISONS: ComparisonPair[] = [
     title: 'GLM-5.3-Flash vs DeepSeek V4.1 Flash — Ultra-Cheap 1M Agent Loop Cost',
     description:
       'Compare Z.ai GLM-5.3-Flash ($0.15/$0.50, $0.03 cached, 1M ctx, AA Index 57) against DeepSeek V4.1 Flash ($0.30/$1.20, $0.006 cached) for high-volume agent loops.',
+  },
+  {
+    slug: 'mistral-large-4-vs-deepseek-v4-pro-peak',
+    modelA: 'mistral-large-4',
+    modelB: 'deepseek-v4-pro-peak',
+    title: 'Mistral Large 4 vs DeepSeek V4 Pro — Open-Weight 1M MoE Agent Cost',
+    description:
+      'Compare Mistral Large 4 ($0.70/$2.10, $0.07 cached, 1M ctx, 116 tok/s) against DeepSeek V4 Pro ($1.32/$3.96, $0.044 cached) for multi-turn agent loops.',
+  },
+  {
+    slug: 'mistral-small-4-vs-gemini-3-5-flash-lite',
+    modelA: 'mistral-small-4',
+    modelB: 'gemini-3-5-flash-lite',
+    title: 'Mistral Small 4 vs Gemini 3.5 Flash-Lite — High-Throughput Worker Loop Cost',
+    description:
+      'Compare Mistral Small 4 ($0.15/$0.60, $0.015 cached, 256k ctx, 150 tok/s) against Gemini 3.5 Flash-Lite ($0.25/$1.50, $0.025 cached) for worker sub-agents.',
   },
 ];

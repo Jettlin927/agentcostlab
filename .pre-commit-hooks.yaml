@@ -1,0 +1,6 @@
+- id: agentcost-lint
+  name: AgentCostLab Prompt & MCP Token Tax Linter
+  description: Catch bloated CLAUDE.md / AGENTS.md / mcp.json static prefixes, prompt-cache-busting timestamps, and leaked API keys before commit.
+  entry: agentcost-lint --fail-on-high
+  language: node
+  files: (^|/)(\.?mcp\.json|\.claude/settings\.json|CLAUDE\.md|AGENTS\.md|SKILL\.md|\.cursorrules|COPILOT_INSTRUCTIONS\.md|\.github/copilot-instructions\.md)$

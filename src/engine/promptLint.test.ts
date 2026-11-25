@@ -3,6 +3,7 @@ import {
   findPromptDiagnosticSpans,
   formatLintOutput,
   renderMarkdownSummary,
+  renderSarifReport,
   resolveLintModel,
   runLintBatch,
 } from './promptLint.mjs';
@@ -35,8 +36,16 @@ describe('promptLint batch engine', () => {
     expect(report.passed).toBe(false);
 
     const ghOut = formatLintOutput(report, 'github');
-    expect(ghOut).toContain('::error file=CLAUDE.md');
+    expect(ghOut).toContain('::error file=CLAUDE.md,line=1,col=14');
     expect(ghOut).toContain('::error title=agentcost-lint (token-budget)');
+
+    const sarif = renderSarifReport(report);
+    expect(sarif.version).toBe('2.1.0');
+    expect((sarif.runs as Array<{ results: Array<{ ruleId: string }> }>)[0].results.map((r) => r.ruleId)).toEqual([
+      'cache-buster',
+      'secret-leak',
+      'token-budget',
+    ]);
 
     const md = renderMarkdownSummary(report);
     expect(md).toContain('| `CLAUDE.md` |');
@@ -84,6 +93,21 @@ describe('promptLint batch engine', () => {
     expect(glmFlashModel.id).toBe('glm-5-3-flash');
     expect(glmFlashModel.inputPerM).toBe(0.15);
     expect(glmFlashModel.cachedInputPerM).toBe(0.03);
+
+    const argonModel = resolveLintModel('gemini-4-argon');
+    expect(argonModel.inputPerM).toBe(2.0);
+    expect(argonModel.cachedInputPerM).toBe(0.1);
+    expect(resolveLintModel('gemini-4-carbon').cachedInputPerM).toBe(0.1);
+
+    const mistralLarge = resolveLintModel('mistral-large-4');
+    expect(mistralLarge.id).toBe('mistral-large-4');
+    expect(mistralLarge.inputPerM).toBe(0.7);
+    expect(mistralLarge.cachedInputPerM).toBe(0.07);
+
+    const mistralSmall = resolveLintModel('mistral-small-4');
+    expect(mistralSmall.id).toBe('mistral-small-4');
+    expect(mistralSmall.inputPerM).toBe(0.15);
+    expect(mistralSmall.cachedInputPerM).toBe(0.015);
   });
 
   it('computes exact line and column spans for IDE diagnostics', () => {
