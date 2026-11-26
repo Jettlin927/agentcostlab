@@ -5,6 +5,13 @@
   "version": "0.1.0",
   "publisher": "jettlin927",
   "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0b1120",
+    "theme": "dark"
+  },
+  "qna": "marketplace",
+  "preview": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/Jettlin927/agentcostlab"
@@ -37,6 +44,7 @@
   "scripts": {
     "sync-core": "node scripts/sync-core.mjs",
     "vscode:prepublish": "node scripts/sync-core.mjs",
+    "package": "node scripts/package.mjs",
     "test": "node scripts/sync-core.mjs && node --test extension.node-test.mjs"
   },
   "contributes": {

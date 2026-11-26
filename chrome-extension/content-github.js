@@ -54,7 +54,33 @@
     toggleHint.textContent = '▾';
     toggleHint.style.color = '#94a3b8';
 
-    header.append(summaryText, toggleHint);
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.textContent = '×';
+    closeBtn.title = 'Dismiss badge for this page';
+    Object.assign(closeBtn.style, {
+      background: 'transparent',
+      border: 'none',
+      color: '#94a3b8',
+      cursor: 'pointer',
+      fontSize: '14px',
+      lineHeight: '1',
+      padding: '0 2px',
+    });
+    closeBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      removeBadge();
+    });
+
+    const controls = document.createElement('span');
+    Object.assign(controls.style, {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+    });
+    controls.append(toggleHint, closeBtn);
+
+    header.append(summaryText, controls);
     container.appendChild(header);
 
     const details = document.createElement('div');
@@ -150,6 +176,13 @@
 
   document.addEventListener('turbo:load', refreshBadge);
   document.addEventListener('pjax:end', refreshBadge);
+  if (chrome.storage?.onChanged) {
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+      if (areaName === 'local' && (changes.modelId || changes.turns)) {
+        refreshBadge();
+      }
+    });
+  }
   const observer = new MutationObserver(checkNavigation);
   observer.observe(document.documentElement, { childList: true, subtree: true });
 

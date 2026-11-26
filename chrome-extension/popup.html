@@ -132,10 +132,29 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 8px;
         font-size: 11px;
         color: #94a3b8;
         border-top: 1px solid #1e293b;
         padding-top: 8px;
+      }
+      .footer-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-copy {
+        background: #111c33;
+        color: #cbd5e1;
+        border: 1px solid #26344f;
+        border-radius: 5px;
+        padding: 3px 7px;
+        font-size: 11px;
+        cursor: pointer;
+      }
+      .btn-copy:hover {
+        border-color: #38bdf8;
+        color: #f8fafc;
       }
       a {
         color: #38bdf8;
@@ -198,9 +217,13 @@
 
       <footer>
         <span id="savingsNote">Cache savings: 0%</span>
-        <a href="https://jettlin927.github.io/agentcostlab/" target="_blank" rel="noopener noreferrer">
-          Full Simulator &amp; x402 MCP →
-        </a>
+        <div class="footer-actions">
+          <button id="loadSampleBtn" class="btn-copy" type="button">Sample</button>
+          <button id="copyReportBtn" class="btn-copy" type="button">Copy Report</button>
+          <a href="https://jettlin927.github.io/agentcostlab/" target="_blank" rel="noopener noreferrer">
+            Simulator →
+          </a>
+        </div>
       </footer>
     </div>
     <script type="module" src="popup.mjs"></script>

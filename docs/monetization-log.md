@@ -687,3 +687,169 @@
   - **Track C Live Algora (`💎 Bounty`)**: Top 8 open issues unchanged from Cycle 26 (`madin-ll/bounty-pipeline-e2e-verify#1` updated `2026-11-25T11:13:07Z`, `revertinc/revert#551`, `highlight/highlight#8032`, `javelin-anticheat/py-workedtask#2`, `outerbase/starbasedb#71`, `lablab-ai/community-content#462`, `limitlessprojects/Go-Hybrid#4617`, `onyx-dot-app/onyx#2281`). Grants: Cloudflare Agents SDK + Monetization Gateway (`x402`) and x402 Foundation remain active.
 - **Top Next Step**:
   1. **Deploy both fixed Workers immediately** (unlocks real Base Mainnet USDC settlement!): in `D:\x402-mcp-agentcost` run `npm test && npm run deploy` + `npx wrangler deploy --config sec-edgar-mcp/wrangler.jsonc` + `git add -A && git commit -m "fix: switch to Base Mainnet PayAI facilitator and decode x402 v2 PaymentPayload" && git push`, and in `D:\agentcostlab` run `npm test && npm run build && git add -A && git commit && git push`; then submit both `/mcp` endpoints (free) to `nohumans.directory` and open the `Sagargupta16/awesome-mcp-servers` PR.
+
+### 2026-11-25 22:14 (Full Batch Deploy Complete: Base Mainnet PayAI Facilitator Live!)
+- **`x402-mcp-agentcost`** (`c1abcea` / Worker `f5d29769`): **23/23** tests passed, pushed & deployed LIVE with Base Mainnet `https://facilitator.payai.network` + `eip3009` + decoded `PaymentPayload` + `glama.json` + **26 models** -> https://x402-mcp-agentcost.jettlin666.workers.dev
+- **`x402-mcp-sec-edgar`** (Worker `13245ecc`): deployed LIVE with Base Mainnet `PayAI` facilitator + **8 tools / 7 paid REST endpoints** (incl. Form 13F-HR institutional holdings, Form 4 insider trades, EFTS search, iXBRL 8-K/10-K excerpt) -> https://x402-mcp-sec-edgar.jettlin666.workers.dev
+- **`AgentCostLab`** (`gh-pages` `6f7088d`): **24/24** tests passed, pushed & deployed LIVE (**26 models + 23 pSEO routes + SARIF 2.1.0 + `--mcp` stdio mode + `packages/agentcost-lint`**) -> https://jettlin927.github.io/agentcostlab/
+- **Listed FREE on `nohumans.directory`**:
+  - AgentCostLab x402 MCP: https://nohumans.directory/l/d4490916-4b6
+  - SEC EDGAR x402 MCP: https://nohumans.directory/l/32870dba-c19
+  - Private `claim_token`s saved safely to gitignored `D:\x402-mcp-agentcost\.dev.vars`.
+  - Tip for next cycle: query free `GET https://nohumans.directory/v1/demand` to inspect real live searches from paying AI agents!
+
+### 2026-11-25 23:09 (Strategic Pivot: Dual-Track Funnel Charter Activated)
+- **User Decision**: Stop tunnel-visioning on MCP model/tool proliferation. Existing MCPs (`agentcostlab`, `x402-mcp-agentcost`, `x402-mcp-sec-edgar`) enter **lightweight maintenance mode** (<=15% effort).
+- **New Dual-Track Mandate** (updated in `Proactive Indie Money Lab` automation prompt):
+  - **Track 1 (Open-Source Skill Funnel — `D:\local-sub-skill`)**: Use `local-sub-skill` (300 Day-1 npm downloads) as the top-of-funnel gateway to Jettlin927's GitHub profile & paid MCPs. Ship high-demand features (bilingual SRT, batch folder mode, Windows drag-and-drop GUI paid bundle), submit to `awesome-ollama` / `awesome-whisper` / `awesome-claude-skills`, and cross-link all MCPs in `README.md`.
+  - **Track 2 (Demand-First Marketplace Extensions)**: Research real underserved pain points in Chrome Web Store / VS Code Marketplace / Reddit / `nohumans.directory/v1/demand`, package existing `vscode-extension/` & `chrome-extension/` for store publishing, and prototype high-intent paid/freemium extensions.
+- Updated `D:\local-sub-skill\README.md` with the cross-promotion funnel block linking to `AgentCostLab`, `x402-mcp-agentcost`, and `vibe-invest-us`.
+
+### 2026-11-26 01:20 (Cycle 28 — Track 1 Executed: `local-sub-skill@1.1.0` Bilingual `.bilingual.srt` + Batch Folder Mode + Awesome-List Funnel Audit)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-18`–`2026-11-24`): `local-sub-skill` = **300** downloads.
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks / 0 open issues), `Jettlin927/agentcostlab` (0★ / 0 forks / 0 open issues), `Jettlin927/x402-mcp-agentcost` (0★ / 0 forks / 0 open issues).
+  - Live Workers (`/health` `200 OK`): `x402-mcp-agentcost` (`{"ok":true,"service":"x402-mcp-agentcost"}`), `x402-mcp-sec-edgar` (`{"ok":true,"service":"x402-mcp-sec-edgar"}`).
+  - Tracked PRs (all 4 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`.
+- **Track 1 Action Executed (`D:\点子哥\local-sub-skill` -> `v1.1.0`)**:
+  - **Bilingual `.bilingual.srt` Output**: Added `build_bilingual_cues`, `write_bilingual_srt`, and `default_bilingual_path` in `scripts/local_translation.py` (`--bilingual`, `--bilingual-path`, `--bilingual-order zh-first|source-first`, deduping identical passthrough cues) and wired `--bilingual` / `--bilingual-order` into `scripts/run_single_video.py` (extracted shared `run_video_pipeline`; materializes `.bilingual.srt` even when reusing existing valid `.zh.srt`).
+  - **Batch Folder Mode**: Added `scripts/run_batch.py` (`discover_videos`, `run_batch`, supporting `--recursive`, `--bilingual`, `--continue-on-error`, `--dry-run`, skipping hidden/temp dirs) and exposed `npx local-sub-skill batch <folder>` + `--version` (`1.1.0`) in `bin/cli.mjs`, `SKILL.md`, `README.md`, and `package.json`.
+  - **Awesome-List Funnel Audit**: Verified `EndoTheDev/Awesome-Ollama` (502★, active merges `2026-11-20`, `Terminal` table format, `0` existing `local-sub-skill` PRs) and `BehiSecc/awesome-claude-skills` (10,488★, active merges `2026-11-01`, `🎬 Media & Content`, `0` existing `local-sub-skill` PRs) are prime PR targets.
+  - **Verification (After Final Edit)**:
+    - Windows: Python `unittest` **30/30** passed (`test_local_translation.py` + `test_video_and_batch.py`), Node `tests/cli.test.mjs` **4/4** passed (incl. `npm pack` + temp install + `local-sub-skill.cmd --help` & `--version`).
+    - WSL Ubuntu (`wsl --cd "D:\点子哥\local-sub-skill"`): Python `unittest` **30/30** passed (`0.523s`), `npm test` **4/4** passed (`1.14s`), and packed `./node_modules/.bin/local-sub-skill --help` / `--version` stdout verified (`v1.1.0`, `batch`, `--bilingual`).
+- **Top Next Step**:
+  1. Commit & push `D:\点子哥\local-sub-skill` and publish `local-sub-skill@1.1.0` to npm (`npm publish --access public`), then submit PRs to `EndoTheDev/Awesome-Ollama` and `BehiSecc/awesome-claude-skills` (and run Track 2 next cycle: demand scan + store packaging for `vscode-extension/` & `chrome-extension/`).
+
+### 2026-11-26 04:11 (Cycle 29 — Track 2 Executed: Demand Scan + Chrome/Edge `.zip` & VS Code/Open VSX `.vsix` Store-Ready Polish & Packaging)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-18`–`2026-11-24`): `local-sub-skill` = **300** downloads.
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★), `Jettlin927/agentcostlab` (0★), `Jettlin927/x402-mcp-agentcost` (0★).
+  - Live Workers (`/health` `200 OK`): `x402-mcp-agentcost` (`{"ok":true,"service":"x402-mcp-agentcost"}`), `x402-mcp-sec-edgar` (`{"ok":true,"service":"x402-mcp-sec-edgar"}`).
+  - Tracked PRs (all 4 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`.
+- **Track 2 Action Executed (Demand Research + Marketplace Store Packaging in `D:\点子哥\agentcostlab`)**:
+  - **Demand & Review Audit**: Scanned `nohumans.directory/v1/demand` (57,560 queries / 2,360 distinct IPs; top needs include `"weather"` 397, `"check an x402 endpoint before paying it"` 40/26 IPs, `"csv preflight"` 25/15 IPs) and 2026 Chrome Web Store / VS Code Marketplace pain points & rejection criteria (`Blue Argon` zero-remote-code rule, `Purple Lithium` privacy-to-permission parity, VS Code non-SVG icon requirement, and developer demand around token cost blindness, MCP tool bloat, and `CLAUDE.md` drift).
+  - **Store Assets, Privacy & UX Polish**:
+    - Generated PNG branding icons (`chrome-extension/icons/icon-{16,32,48,128}.png` + `vscode-extension/images/icon.png`), wired `manifest.json` icons and `vscode-extension/package.json` (`icon`, `galleryBanner`, `qna`, `preview`, `package` script), and synced `LICENSE` via both `sync-core.mjs` scripts.
+    - Added `PRIVACY.md` and copy-paste `STORE_LISTING.md` (single-purpose statement, `activeTab`/`storage`/`github.com` justifications, and publish commands) for both `chrome-extension/` and `vscode-extension/`, and updated `vscode-extension/README.md` to reflect all 22 Nov-2026 models across 10 providers.
+    - Shipped UX upgrades: dismissible (`×`) + `chrome.storage.onChanged` live-syncing GitHub badge (`content-github.js`), 1-click **Copy Report** Markdown export (`analyzer.mjs` `formatLintReportMarkdown`, `popup.html`, `popup.mjs`), and VS Code info-bar quick actions (`Switch Model` / `Open Simulator` in `extension.cjs`).
+  - **Zero-Dependency Store Packagers**: Extracted shared deterministic DEFLATE ZIP builder `scripts/zip-utils.mjs`, added `chrome-extension/scripts/package.mjs`, `vscode-extension/scripts/package.mjs` (spec-compliant OPC `.vsix` with `[Content_Types].xml` + `extension.vsixmanifest`), and root `npm run package:extensions`.
+  - **Verification (After Final Edit)**:
+    - `chrome-extension/extension.node-test.mjs`: **6/6** passed; `vscode-extension/extension.node-test.mjs`: **3/3** passed; `bin/agentcost-lint.node-test.mjs`: **5/5** passed; `packages/agentcost-lint/package.node-test.mjs`: **2/2** passed; `npx tsc -b`: passed (`0` errors).
+    - Built & CRC32-verified (`zipfile.testzip() == None` + XML schema parse): `chrome-extension/dist/agentcostlab-chrome-v0.1.0.zip` (**12** files, **36,934** bytes) and `vscode-extension/dist/agentcost-lint-0.1.0.vsix` (**9** entries, **28,086** bytes).
+- **Top Next Step**:
+  1. Commit & push `D:\点子哥\agentcostlab` (so the `PRIVACY.md` GitHub URLs go live), capture 1–2 `1280x800` screenshots, and upload `chrome-extension/dist/agentcostlab-chrome-v0.1.0.zip` to Chrome Web Store & Edge Add-ons plus `vscode-extension/dist/agentcost-lint-0.1.0.vsix` to VS Code Marketplace & Open VSX (and next cycle alternate back to **Track 1**: `local-sub-skill` Windows drag-and-drop GUI paid bundle / awesome-list PRs).
+
+
+### 2026-11-26 07:13 (Cycle 30 — Track 1 Executed: `local-sub-skill@1.2.0` Drag-and-Drop Web Studio + Windows Desktop Bundle + `doctor` & macOS/Linux Polish + Launch Kit)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-18`–`2026-11-24`): `local-sub-skill` = **300** downloads.
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks), `Jettlin927/agentcostlab` (0★ / 0 forks), `Jettlin927/x402-mcp-agentcost` (0★ / 0 forks).
+  - Live Workers (`/health` `200 OK`): `x402-mcp-agentcost` (`{"ok":true,"service":"x402-mcp-agentcost"}`), `x402-mcp-sec-edgar` (`{"ok":true,"service":"x402-mcp-sec-edgar"}`).
+  - Tracked PRs (all 4 `OPEN`, `merged: false`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`.
+- **Track 1 Action Executed (`D:\点子哥\local-sub-skill` -> `v1.2.0`)**:
+  - **Zero-Dependency Drag-and-Drop Web Studio (`scripts/gui.py` + `npx local-sub-skill gui`)**: Built a 100% Python-stdlib `ThreadingHTTPServer` studio (`127.0.0.1`) with HTML5 `.srt` drag-and-drop translation (`POST /api/translate-srt`, 1-click `.zh.srt` / `.bilingual.srt` downloads), local video/folder runner (`POST /api/run-path` supporting dry-run & recursive batch), and live environment health badge (`GET /api/doctor`).
+  - **Portable Windows Drag-and-Drop Bundle (`packaging/windows/` -> `¥19/$5` Paid Pack Prototype)**: Added `DropVideoOrSrtHere.bat` (drag any `.mp4`/`.mkv`/`.srt` or folder onto the icon), `LaunchGUI.bat`, `BUNDLE_GUIDE_ZH.md`, and stdlib packager `packaging/package_windows_bundle.py` (`npm run package:bundle` -> `dist/local-sub-desktop-win64-v1.2.0.zip`, **26,817** bytes, ignored by `.gitignore` & `.npmignore`).
+  - **Cross-Platform `doctor` & macOS/Linux Polish**: Added `scripts/doctor.py` (`npx local-sub-skill doctor [--json] [--strict]`), added Python `faster-whisper` ASR fallback + macOS `cpu`/`int8` defaults in `scripts/run_single_video.py` & `scripts/run_batch.py`, and made `faster_whisper` import lazy in `scripts/setup_local_models.py` so `--skip-whisper` works without Whisper installed.
+  - **Awesome-List PR & Viral Post Kit (`docs/launch-posts.md`)**: Verified live README formats for `BehiSecc/awesome-claude-skills` (10,490★), `EndoTheDev/Awesome-Ollama` (502★), and `ancs21/awesome-openai-whisper` (110★) and prepared exact PR snippets plus V2EX / Linux.do / r/LocalLLaMA / 小红书 launch posts.
+- **Verification (After Final Edit)**:
+  - Windows: Python `unittest` **33/33** passed (`test_gui_and_doctor.py`, `test_local_translation.py`, `test_video_and_batch.py`), `npm test` **4/4** passed, `npm run package:bundle` built `dist/local-sub-desktop-win64-v1.2.0.zip` (**26,817** bytes, `zipfile.testzip() == None`).
+  - WSL Ubuntu (`wsl --cd "D:\点子哥\local-sub-skill" bash -lc '...'`): Python `unittest` **33/33** passed (`1.059s`), `npm test` **4/4** passed, and packed `local-sub-skill-1.2.0.tgz` (**12** files, **24.9 kB**) installed into `/tmp/lss-posix` with `./node_modules/.bin/local-sub-skill --help`, `--version` (`1.2.0`), and `doctor --json` stdout all verified cleanly.
+- **Top Next Step**:
+  1. In `D:\点子哥\local-sub-skill`, run `git add -A && git commit -m "feat: v1.2.0 drag-and-drop studio, Windows bundle, doctor & macOS/Linux fallback" && git push && npm publish --access public`, then submit the 3 prepared awesome-list PRs (`BehiSecc/awesome-claude-skills`, `EndoTheDev/Awesome-Ollama`, `ancs21/awesome-openai-whisper`) and post the launch threads in `docs/launch-posts.md` (and next cycle alternate back to **Track 2**: Chrome/Edge/VS Code store submission or new high-intent demand extension).
+
+
+### 2026-11-26 10:15 (Cycle 31 — Track 2 Executed: Demand Research + Prototyped & Packaged `ContextPack` VS Code / Open VSX Micro-Extension)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-18`–`2026-11-24`): `local-sub-skill` = **300** downloads.
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks), `Jettlin927/agentcostlab` (0★ / 0 forks), `Jettlin927/x402-mcp-agentcost` (0★ / 0 forks).
+  - Live Workers (`/health` `200 OK`): `x402-mcp-agentcost` (`{"ok":true,"service":"x402-mcp-agentcost"}`), `x402-mcp-sec-edgar` (`{"ok":true,"service":"x402-mcp-sec-edgar"}`).
+  - Tracked PRs (all 4 `OPEN`, `merged: false`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`.
+- **Track 2 Action Executed (Demand Research + New High-Intent Micro-Extension `D:\点子哥\contextpack-vscode`)**:
+  - **Demand & Complaint Scan**: Audited `nohumans.directory/v1/demand` (57,630 queries / 2,347 distinct IPs; 0 unmet terms) and 2026 Reddit / Chrome Web Store / VS Code Marketplace pain points (`r/vscode`, `r/ClaudeAI`, `r/LocalLLaMA`, `r/SideProject`). Validated a high-intent paid gap around **Repo Prompt** ($10–$20/mo, macOS-only) and Repomix VS Code complaints: developers want a **100% local, zero-telemetry Context Basket** (post-ChatMoss exfiltration backlash) that handles Explorer multi-select, survives reloads/SSH/WSL reconnects, scrubs secrets, avoids misrepresenting partial selections as the whole repo, and budgets tokens across frontier + local Ollama models without a monthly subscription.
+  - **Built `D:\点子哥\contextpack-vscode` (`contextpack@0.1.0`)**:
+    - Core packer (`core/packer.mjs`): `.gitignore` + `.contextignore` + binary/oversize filtering, built-in local `redactSecrets` (`sk-*`, `ghp_*`, `github_pat_*`, `AIza*`, `xox*`, `AKIA*`, PEM blocks, `.env` keys -> `[REDACTED_SECRET]`), ASCII file tree, `scope="selected_files"` XML & nested-backtick-safe Markdown formatting, and token/cost budgeting across **16** models (Claude 5.5/Fable 5.2, GPT-6.2/6.1, Gemini 4 Neon/Hydrogen, DeepSeek V4, Qwen4-Max, Kimi K3.1 Pro, MiniMax-M3, Grok 4.7, Mistral Large 4, and **Ollama / Local LLM ($0)**).
+    - VS Code extension (`extension.cjs`, `package.json`): Activity Bar **ContextPack Basket** TreeView + status bar token/cost meter, Explorer & Editor multi-select commands, 1-click **Add Open Editor Tabs** and **Add Git Modified Files**, `workspaceState` persistence, model switcher, and AgentCostLab web simulator link.
+    - Store & packaging assets: `scripts/generate-icon.mjs` (`images/icon.png` 128x128, 1,579 bytes), zero-dep OPC packager `scripts/package.mjs`, `PRIVACY.md`, `STORE_LISTING.md`, `README.md`, and MIT `LICENSE`.
+  - **Verification (After Final Edit)**:
+    - `npm --prefix D:\点子哥\contextpack-vscode test`: **4/4** passed (`test/packer.node-test.mjs`: secret redaction, `.gitignore`/`.contextignore`/binary/size filtering, XML/Markdown formatting, and VS Code controller + `workspaceState` + Git modified + clipboard).
+    - `npm --prefix D:\点子哥\contextpack-vscode run package` + Python `zipfile.testzip()` & XML parse: `dist/contextpack-0.1.0.vsix` built cleanly (**9** entries, **18,298** bytes, CRC32 & XML valid).
+- **Top Next Step**:
+  1. Push `D:\点子哥\contextpack-vscode` (new repo `Jettlin927/contextpack-vscode`) + `D:\点子哥\agentcostlab`, and publish `dist/contextpack-0.1.0.vsix` alongside `agentcostlab/vscode-extension/dist/agentcost-lint-0.1.0.vsix` to VS Code Marketplace (`vsce publish`) & Open VSX (`ovsx publish`) (and next cycle alternate back to **Track 1**: `local-sub-skill@1.2.0` push/npm publish + awesome-list PRs).
+
+
+### 2026-11-26 13:20 (Cycle 32 — Track 1 Executed: `local-sub-skill@1.3.0` Native WebVTT `.vtt` Support + Standalone Subtitle Batch Mode + Multi-File GUI Queue)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-18`–`2026-11-24`): `local-sub-skill` = **300** downloads (live npm registry currently at `v1.0.1`; `v1.1.0–v1.3.0` ready locally for publish).
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks / 0 open issues), `Jettlin927/agentcostlab` (0★ / 0 forks / 0 open issues), `Jettlin927/x402-mcp-agentcost` (0★ / 0 forks / 0 open issues).
+  - Live Workers (`/health` `200 OK`): `x402-mcp-agentcost` (`{"ok":true,"service":"x402-mcp-agentcost"}`), `x402-mcp-sec-edgar` (`{"ok":true,"service":"x402-mcp-sec-edgar"}`).
+  - Tracked PRs (all 4 `OPEN`, `mergedAt: null`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475`.
+- **Track 1 Action Executed (`D:\点子哥\local-sub-skill` -> `v1.3.0`)**:
+  - **Native WebVTT (`.vtt`) Support (`scripts/local_translation.py`)**: Added `parse_vtt_text`, `strip_vtt_tags`, `parse_subtitles`, `strip_subtitle_lang_suffix`, and `derive_target_srt_path` (strips `WEBVTT` headers, `NOTE`/`STYLE`/`REGION` blocks, cue settings, `<c>`/`<v>`/inline timestamp tags, decodes HTML entities, normalizes `MM:SS.mmm` -> `00:MM:SS,mmm`, and collapses rolling duplicate lines); routed `translate_srt()`, `validate_pair()`, and `write_bilingual_srt()` through `parse_subtitles()`, and made `target_srt` optional on CLI (`npx local-sub-skill translate lecture.en.vtt --bilingual`).
+  - **Standalone Subtitle Folder Batch Mode (`scripts/run_batch.py`)**: Added `discover_standalone_subtitles` (skips generated `.zh.srt`/`.bilingual.srt`/`.zh-Hant.srt` and video-paired subtitles), `run_subtitle_job`, and `--subtitles-only` flag so folders of `.srt` / `.vtt` files batch-translate cleanly with checkpoint & dry-run support.
+  - **Multi-File Drag-and-Drop Web Studio & Windows `.bat` (`scripts/gui.py`, `packaging/windows/DropVideoOrSrtHere.bat`)**: Added `<input accept=".srt,.vtt,text/plain" multiple>` sequential queue + per-file `.zh.srt`/`.bilingual.srt` download rows, `.vtt` temp suffix routing in `handle_translate_srt_payload`, and `.vtt` drag-and-drop routing in `DropVideoOrSrtHere.bat`; synced `bin/cli.mjs`, `SKILL.md`, `README.md`, `BUNDLE_GUIDE_ZH.md`, `docs/launch-posts.md`, and `package.json` (`1.3.0`).
+  - **Awesome-List Target Refresh**: Verified `ComposioHQ/awesome-claude-skills` (`80,328★`), `BehiSecc/awesome-claude-skills` (`10,489★`), `EndoTheDev/Awesome-Ollama` (`503★`), and `ancs21/awesome-openai-whisper` (`110★`) remain active PR targets once `v1.3.0` is pushed & published.
+- **Verification (After Final Edit)**:
+  - Windows: Python `unittest` **35/35** passed (`test_gui_and_doctor.py`, `test_local_translation.py`, `test_video_and_batch.py`), `npm test` **4/4** passed, `packaging/package_windows_bundle.py` built `dist/local-sub-desktop-win64-v1.3.0.zip` (**29,715** bytes, 12 entries, `zipfile.testzip() is None`).
+  - WSL Ubuntu (`wsl --cd "D:\点子哥\local-sub-skill"`): Python `unittest` **35/35** passed (`1.260s`), `npm test` **4/4** passed (`0.839s`), and packed `local-sub-skill-1.3.0.tgz` (**12** files, **27.2 kB**) installed into `/tmp/lss-posix-v130/app` with `./node_modules/.bin/local-sub-skill --help` (`.vtt`, `--subtitles-only`), `--version` (`1.3.0`), and `doctor --json` stdout all verified cleanly.
+- **Top Next Step**:
+  1. In `D:\点子哥\local-sub-skill`, run `git add -A && git commit -m "feat: v1.3.0 WebVTT support, standalone subtitle batch mode & multi-file GUI queue" && git push && npm publish --access public`, then open PRs to `BehiSecc/awesome-claude-skills` / `EndoTheDev/Awesome-Ollama` / `ancs21/awesome-openai-whisper` (and next cycle alternate back to **Track 2**: store submission for `agentcostlab` / `contextpack-vscode`).
+
+
+### 2026-11-26 16:17 (Cycle 33 — Track 2 Executed: Demand Scan + Store-Required `1280×800` Screenshots & Promo Tiles + Config/UX Polish across Chrome/Edge & VS Code Extensions)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-18`–`2026-11-24`): `local-sub-skill` = **300** downloads.
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks / 0 open issues), `Jettlin927/agentcostlab` (0★ / 0 forks / 0 open issues), `Jettlin927/x402-mcp-agentcost` (0★ / 0 forks / 0 open issues).
+  - Live Workers (`/health` `200 OK`): `x402-mcp-agentcost` (`{"ok":true,"service":"x402-mcp-agentcost"}`), `x402-mcp-sec-edgar` (`{"ok":true,"service":"x402-mcp-sec-edgar"}`).
+  - Tracked PRs (`open`): `xpaysh/awesome-x402#2319`, `punkpeye/awesome-mcp-servers#20312`, `yzfly/Awesome-MCP-ZH#1153`, `ai-boost/awesome-harness-engineering#475` (`TensorBlock/awesome-mcp-servers#6796` remains merged/closed).
+- **Track 2 Action Executed (Demand Research + Store Submission Visuals & UX Polish)**:
+  - **Demand & Store Rejection Scan**: Audited `nohumans.directory/v1/demand` (57,635 queries / 2,347 distinct IPs; 0 unmet terms) and 2026 Reddit (`r/LocalLLaMA`, `r/vscode`, `r/ClaudeAI`, `r/chrome_extensions`, `r/SideProject`) complaints — confirmed developer backlash against paywalled/cloud-telemetry extensions and validated strong demand for zero-telemetry, local-first prompt/context tooling; also resolved the two Chrome Web Store hard blockers (missing `1280×800` 24-bit RGB screenshots + empty popup UX on non-GitHub review tabs).
+  - **Chrome/Edge & VS Code Functional Upgrades**:
+    - Expanded `chrome-extension/analyzer.mjs` and `vscode-extension/extension.cjs` to auto-detect **`GEMINI.md`**, **`CODEX.md`**, **`.windsurfrules`**, **`.clinerules`**, and **`opencode.json`** alongside `CLAUDE.md`, `AGENTS.md`, `SKILL.md`, `.cursorrules`, `copilot-instructions.md`, and `mcp.json` (zero extra permissions).
+    - Added 1-click **Sample** loader (`#loadSampleBtn`) in `chrome-extension/popup.html` & `popup.mjs` so store reviewers and first-time users on any tab can test cache-buster + secret detection immediately.
+  - **Headless Edge + Pillow RGB Store Assets (`scripts/generate-store-assets.py`)**:
+    - Rendered zero-alpha 24-bit `RGB` PNGs for Chrome Web Store & Edge Partner Center in `chrome-extension/store-assets/`: `screenshot-1-github-badge-1280x800.png` (1280×800), `screenshot-2-popup-linter-1280x800.png` (1280×800), `promo-small-440x280.png` (440×280), `promo-marquee-1400x560.png` (1400×560), and `edge-logo-300x300.png` (300×300), and updated `chrome-extension/STORE_LISTING.md`.
+    - Rendered `1280×800` marketplace screenshots for both VS Code extensions (`D:\点子哥\agentcostlab\vscode-extension\images\screenshot.png` and `D:\点子哥\contextpack-vscode\images\screenshot.png`), embedded them into both `README.md` files, and updated both `scripts/package.mjs` packagers to bundle `images/screenshot.png` inside the `.vsix`.
+- **Verification (After Final Edit)**:
+  - `chrome-extension/extension.node-test.mjs`: **6/6** passed; `vscode-extension/extension.node-test.mjs`: **3/3** passed; `contextpack-vscode` `npm test`: **4/4** passed.
+  - Packaged & CRC32/XML verified (`zipfile.testzip() == None`): `chrome-extension/dist/agentcostlab-chrome-v0.1.0.zip` (**12** files, **37,207** bytes), `vscode-extension/dist/agentcost-lint-0.1.0.vsix` (**10** entries, **76,806** bytes), `D:\点子哥\contextpack-vscode\dist\contextpack-0.1.0.vsix` (**10** entries, **77,028** bytes).
+  - Verified all 7 PNG assets via Pillow (`mode == 'RGB'`, exact target dimensions).
+- **Top Next Step**:
+  1. Commit & push `D:\点子哥\agentcostlab` (and push `D:\点子哥\contextpack-vscode` to `Jettlin927/contextpack-vscode`), then upload `agentcostlab-chrome-v0.1.0.zip` + `chrome-extension/store-assets/*` to Chrome Web Store & Edge Partner Center and publish `agentcost-lint-0.1.0.vsix` + `contextpack-0.1.0.vsix` to VS Code Marketplace & Open VSX (next cycle alternate back to **Track 1**: `local-sub-skill@1.3.0` commit/push/npm publish + awesome-list PRs).
+
+
+### 2026-11-26 19:27 (Cycle 34 — Track 1 Executed: `local-sub-skill@1.4.0` Styled `.bilingual.ass` + Custom Glossary + Awesome-List PR Branches)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-19`–`2026-11-25`): `local-sub-skill` = **476** downloads (+58.7% vs prior 300; live registry at `1.0.1`).
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks / 0 open issues), `Jettlin927/agentcostlab` (0★ / 0 forks / 0 open issues), `Jettlin927/x402-mcp-agentcost` (0★ / 0 forks / 0 open issues).
+  - Live Workers (`/health`): `x402-mcp-agentcost.jettlin666.workers.dev/health` and `x402-mcp-sec-edgar.jettlin666.workers.dev/health` timed out direct and aborted TLS via local `127.0.0.1:7897` proxy in this run's network environment (unable to verify 200 OK remotely here).
+  - Tracked PRs: `xpaysh/awesome-x402#2319` (`open`), `punkpeye/awesome-mcp-servers#20312` (`open`), `yzfly/Awesome-MCP-ZH#1153` (`open`), `ai-boost/awesome-harness-engineering#475` (`closed`, `merged: false` — maintainer cited ~5+ stars / external traction bar, validating our `local-sub-skill` top-of-funnel pivot).
+- **Track 1 Action Executed (`D:\点子哥\local-sub-skill` -> `v1.4.0`)**:
+  - **Custom Glossary / Terminology Overrides (`scripts/local_translation.py`)**: Added `parse_glossary_text`, `load_glossary`, `discover_glossary_path`, and `_resolve_glossary` supporting `.json` and `source=target` / `=>` / `\t` text glossaries (plus automatic discovery of `.local-sub-glossary.{json,txt}` / `glossary.{json,txt}` beside inputs), injected into `_prompt()` and included in `identity` so caches/checkpoints invalidate automatically on term updates.
+  - **Styled Dual-Language `.bilingual.ass` Output (`--ass` / `--ass-path`)**: Added `default_ass_path`, `_srt_timing_to_ass_pair`, `_escape_ass_text`, shared `_aligned_pairs`, `render_bilingual_ass`, and `write_bilingual_ass` (`PrimaryZh` + `SecondarySrc` ASS styles for PotPlayer/VLC/mpv/IINA) and wired `--ass` and `--glossary` across `local_translation.py`, `run_single_video.py`, `run_batch.py`, `bin/cli.mjs`, `SKILL.md`, `README.md`, and `packaging/windows/DropVideoOrSrtHere.bat`.
+  - **Web Studio & Windows Bundle Polish (`scripts/gui.py`, `package.json` `1.4.0`)**: Added `.bilingual.ass` toggle + `下载 .bilingual.ass` button, glossary textarea (`glossary_text`), and a clean footer cross-link to `AgentCostLab`, plus removed the stray `.tgz` from repo root and ignored `*.tgz` in `.gitignore`.
+  - **Awesome-List PR Branches Prepared**: Fixed `docs/launch-posts.md` `EndoTheDev/Awesome-Ollama` 4-column table format, forked both `EndoTheDev/Awesome-Ollama` (503★) and `BehiSecc/awesome-claude-skills` (10,490★), and pushed clean `+1/-0` `add-local-sub-skill` branches (`ahead_by: 1`):
+    - `https://github.com/EndoTheDev/Awesome-Ollama/compare/main...Jettlin927:Awesome-Ollama:add-local-sub-skill?expand=1`
+    - `https://github.com/BehiSecc/awesome-claude-skills/compare/main...Jettlin927:awesome-claude-skills:add-local-sub-skill?expand=1`
+- **Verification (After Final Edit)**:
+  - Windows: Python `unittest` **37/37** passed (`1.485s`), `npm test` **4/4** passed (`2.295s`), `npm run package:bundle` built `dist/local-sub-desktop-win64-v1.4.0.zip` (**32,990** bytes, **12** entries, `zipfile.testzip() is None`).
+  - WSL Ubuntu (`wsl --cd "D:\点子哥\local-sub-skill"`): Python `unittest` **37/37** passed (`1.151s`), `npm test` **4/4** passed (`1.068s`), and packed `local-sub-skill-1.4.0.tgz` (**12** files, **30.4 kB**) installed into a temp dir with `./node_modules/.bin/local-sub-skill --help` (`--ass`, `--glossary`), `--version` (`1.4.0`), and `doctor --json` stdout all verified cleanly.
+- **Top Next Step**:
+  1. In `D:\点子哥\local-sub-skill`, run `git add -A && git commit -m "feat: v1.4.0 styled .bilingual.ass output & custom glossary" && git push && npm publish --access public`, then click the two ready compare links above to open the `Awesome-Ollama` and `awesome-claude-skills` PRs (next cycle alternate back to **Track 2**: Chrome/Edge & VS Code store submissions or new high-intent demand extension).
+
+
+### 2026-11-26 22:22 (Cycle 35 — Track 2 Executed: Demand Research + `ContextPack` VS Code `v0.2.0` Codemaps, Live `git diff` & Zero-Silent-Truncation Guardrail)
+- **Maintenance Check (15% Effort)**:
+  - `npm` downloads (`2026-11-19`–`2026-11-25`): `local-sub-skill` = **476** downloads.
+  - GitHub stats: `Jettlin927/local-sub-skill` (0★ / 0 forks / 0 open issues), `Jettlin927/agentcostlab` (0★ / 0 forks / 0 open issues); `Jettlin927/x402-mcp-agentcost` stats, live Workers (`/health`), and open PRs (`#2319`, `#20312`, `#1153`, `#475`) could not be refreshed remotely due to transient `127.0.0.1:7897` TLS abort / direct timeout in this environment.
+- **Track 2 Action Executed (Demand Research + `D:\点子哥\contextpack-vscode` -> `v0.2.0`)**:
+  - **Demand & Complaint Research**: Audited 2026 Reddit (`r/vscode`, `r/LocalLLaMA`, `r/ClaudeAI`) and extension marketplace discussions — identified two high-intent gaps driving users away from Repomix / $10–$20/mo Repo Prompt / cloud extensions: (1) **Context bloat & silent truncation** when pasting code into `32k` local Ollama or `200k` Claude Web windows, and (2) **Trojanized/broad-telemetry extension backlash** driving demand for 100% local, zero-telemetry Codemap + `git diff` packing.
+  - **Upgraded `D:\点子哥\contextpack-vscode` (`core/packer.mjs`, `extension.cjs`, `package.json`, `README.md`, `STORE_LISTING.md`)**:
+    - **Zero-Dep Local Codemap Mode (`compressToCodemap`)**: String/comment-aware brace & Python skeletonizer stripping function/method bodies into `{ /* ... */ }` / `# ...` while keeping imports, exports, types/interfaces, class headers, and signatures (exposed via `contextpack.copyBasketCodemap`).
+    - **Zero Silent Truncation Guardrail**: Expanded `CONTEXT_MODELS` from 16 to **22 models** (adding `Claude Web / Projects (200k)`, `Ollama / Local 32k ($0)`, `Gemini 4 Argon`, `DeepSeek V4.1 Flash`, `GLM-5.3`, `GLM-5.3-Flash`), added amber/red status bar warnings (`statusBarItem.warningBackground` / `errorBackground` + `OVER`), and added an interactive pre-copy overflow prompt (`confirmOverflowBundle`) offering 1-click **Copy Codemap Instead**.
+    - **Live `git diff` Packing (`contextpack.copyBasketWithDiff`)**: Bundles secret-redacted `git diff HEAD` (`<git_diff>` / `## Git Diff`) alongside staged basket files for PR/bug debugging.
+  - **Verification (After Final Edit)**:
+    - `npm --prefix D:\点子哥\contextpack-vscode test`: **6/6** passed (`test/packer.node-test.mjs` covering Codemap TS/Python skeletonizing, `gitDiff` redaction, overflow prompt -> Codemap fallback, and status bar `OVER` warning).
+    - `npm --prefix D:\点子哥\contextpack-vscode run package` + Python `zipfile.testzip()` & XML/JSON check: built `dist/contextpack-0.2.0.vsix` (**80,777** bytes, **10** entries, CRC32 & XML valid).
+- **Top Next Step**:
+  1. Push `D:\点子哥\contextpack-vscode` to a new GitHub repo (`Jettlin927/contextpack-vscode`), publish `dist/contextpack-0.2.0.vsix` to VS Code Marketplace & Open VSX (`npx @vscode/vsce publish` / `npx ovsx publish`), and push `D:\点子哥\agentcostlab` + upload `chrome-extension/dist/agentcostlab-chrome-v0.1.0.zip` to Chrome Web Store / Edge Add-ons (next cycle alternate back to **Track 1**: `local-sub-skill@1.4.0` publish + awesome-list PRs).

@@ -1,5 +1,7 @@
 .vscode/**
 .vscode-test/**
 scripts/**
+dist/**
 extension.node-test.mjs
+STORE_LISTING.md
 *.vsix

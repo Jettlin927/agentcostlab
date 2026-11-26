@@ -14,6 +14,7 @@
     "test": "vitest run && node --test bin/agentcost-lint.node-test.mjs && node packages/agentcost-lint/scripts/sync-core.mjs && node --test packages/agentcost-lint/package.node-test.mjs && node vscode-extension/scripts/sync-core.mjs && node --test vscode-extension/extension.node-test.mjs && node chrome-extension/scripts/sync-core.mjs && node --test chrome-extension/extension.node-test.mjs",
     "test:watch": "vitest",
     "lint:prompts": "node ./bin/agentcost-lint.mjs",
+    "package:extensions": "node chrome-extension/scripts/package.mjs && node vscode-extension/scripts/package.mjs",
     "deploy:cf": "npm run build && npx wrangler deploy",
     "deploy:cf:preview": "npm run build && npx wrangler deploy --temporary"
   },

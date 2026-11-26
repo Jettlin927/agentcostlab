@@ -1,4 +1,8 @@
-import { analyzePromptForExtension, getAvailableLintModels } from './analyzer.mjs';
+import {
+  analyzePromptForExtension,
+  formatLintReportMarkdown,
+  getAvailableLintModels,
+} from './analyzer.mjs';
 
 const modelSelect = document.getElementById('modelSelect');
 const turnsInput = document.getElementById('turnsInput');
@@ -9,6 +13,17 @@ const uncachedVal = document.getElementById('uncachedVal');
 const savingsNote = document.getElementById('savingsNote');
 const issuesList = document.getElementById('issuesList');
 const sourceNote = document.getElementById('sourceNote');
+const loadSampleBtn = document.getElementById('loadSampleBtn');
+const copyReportBtn = document.getElementById('copyReportBtn');
+let lastReport = null;
+
+const SAMPLE_CLAUDE_MD = [
+  '# Coding Agent Rules (Sample)',
+  '',
+  'Always read README.md and run unit tests before committing.',
+  'Current session timestamp: {{current_time}}',
+  'Fallback debug token: sk-demo-1234567890abcdefghij',
+].join('\n');
 
 function populateModels() {
   const models = getAvailableLintModels();
@@ -25,6 +40,7 @@ function renderReport() {
     modelId: modelSelect.value,
     turns: Number(turnsInput.value) || 24,
   });
+  lastReport = report;
 
   tokensVal.textContent = report.estimatedTokens.toLocaleString('en-US');
   cachedVal.textContent = report.cachedFormatted;
@@ -102,6 +118,28 @@ async function init() {
     renderReport();
   });
   promptInput.addEventListener('input', renderReport);
+  if (loadSampleBtn) {
+    loadSampleBtn.addEventListener('click', () => {
+      promptInput.value = SAMPLE_CLAUDE_MD;
+      sourceNote.hidden = false;
+      sourceNote.textContent = 'Loaded sample CLAUDE.md with cache-buster & key warning';
+      renderReport();
+    });
+  }
+  if (copyReportBtn) {
+    copyReportBtn.addEventListener('click', async () => {
+      if (!lastReport || !navigator.clipboard?.writeText) return;
+      try {
+        await navigator.clipboard.writeText(formatLintReportMarkdown(lastReport));
+        copyReportBtn.textContent = 'Copied!';
+        window.setTimeout(() => {
+          copyReportBtn.textContent = 'Copy Report';
+        }, 1500);
+      } catch {
+        copyReportBtn.textContent = 'Copy failed';
+      }
+    });
+  }
 }
 
 init();

@@ -8,11 +8,16 @@ const TARGET_BASENAMES = new Set([
   'claude.md',
   'agents.md',
   'skill.md',
+  'gemini.md',
+  'codex.md',
   '.cursorrules',
+  '.windsurfrules',
+  '.clinerules',
   'copilot_instructions.md',
   'copilot-instructions.md',
   'mcp.json',
   '.mcp.json',
+  'opencode.json',
 ]);
 
 const TARGET_SUFFIXES = [
@@ -124,8 +129,14 @@ function createController(vscode, core) {
     const report = inspectDocument(editor.document, true);
     if (!report) return null;
     const { model, turns } = getConfig();
-    const summary = `AgentCostLab (${model.name}, ${turns}t): ${report.estimatedTokens.toLocaleString('en-US')} tokens | ${core.formatUsdCompact(report.costPer1kRunsCached)}/1k cached vs ${core.formatUsdCompact(report.costPer1kRunsUncached)}/1k uncached | ${report.warnings.length} warning(s)`;
-    vscode.window.showInformationMessage(summary);
+    const topFinding = report.warnings[0] ? ` Top: [${report.warnings[0].ruleId}] ${report.warnings[0].message}` : '';
+    const summary = `AgentCostLab (${model.name}, ${turns}t): ${report.estimatedTokens.toLocaleString('en-US')} tokens | ${core.formatUsdCompact(report.costPer1kRunsCached)}/1k cached vs ${core.formatUsdCompact(report.costPer1kRunsUncached)}/1k uncached | ${report.warnings.length} warning(s)${topFinding}`;
+    const choice = await vscode.window.showInformationMessage(summary, 'Switch Model', 'Open Simulator');
+    if (choice === 'Switch Model') {
+      await selectModelCommand();
+    } else if (choice === 'Open Simulator') {
+      await openCalculatorCommand();
+    }
     return report;
   }
 

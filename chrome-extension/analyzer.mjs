@@ -6,7 +6,16 @@ import {
   resolveLintModel,
 } from './core/promptLint.mjs';
 
-const EXTRA_TARGET_BASENAMES = ['skill.md', '.cursorrules', 'copilot-instructions.md'];
+const EXTRA_TARGET_BASENAMES = [
+  'skill.md',
+  'gemini.md',
+  'codex.md',
+  '.cursorrules',
+  '.windsurfrules',
+  '.clinerules',
+  'copilot-instructions.md',
+  'opencode.json',
+];
 
 const TARGET_BASENAMES = new Set([
   ...DEFAULT_TARGET_FILES.map((file) => file.split('/').pop().toLowerCase()),
@@ -103,4 +112,29 @@ export function analyzePromptForExtension(text, options = {}) {
     cachedFormatted: formatUsdCompact(result.costPer1kRunsCached),
     uncachedFormatted: formatUsdCompact(result.costPer1kRunsUncached),
   };
+}
+
+/**
+ * Format an extension lint report as a concise Markdown snippet for PRs or reviews.
+ * @param {ReturnType<typeof analyzePromptForExtension>} report
+ * @returns {string}
+ */
+export function formatLintReportMarkdown(report) {
+  const lines = [
+    `**AgentCostLab Lint (${report.model.name}, ${report.turns} turns)**`,
+    `- Static prefix: **${report.estimatedTokens.toLocaleString('en-US')} tokens** (${report.charCount} chars)`,
+    `- 1,000-run cost: **${report.cachedFormatted} cached** vs **${report.uncachedFormatted} uncached** (-${report.savingsPct}% savings)`,
+  ];
+  if (report.detectedToolCount > 0) {
+    lines.push(`- Detected MCP/tool definitions: **${report.detectedToolCount}**`);
+  }
+  if (report.warnings.length === 0) {
+    lines.push('- Findings: none (cache-safe)');
+  } else {
+    lines.push(`- Findings (${report.warnings.length}):`);
+    for (const w of report.warnings) {
+      lines.push(`  - [${w.severity.toUpperCase()}] \`${w.ruleId}\`: ${w.message}`);
+    }
+  }
+  return lines.join('\n');
 }

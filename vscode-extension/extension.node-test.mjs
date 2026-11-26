@@ -1,8 +1,13 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 import * as core from '../src/engine/promptLint.mjs';
+import { packageVsCodeExtension } from './scripts/package.mjs';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 const { createController, isAgentPromptFile } = require('./extension.cjs');
 
@@ -104,6 +109,11 @@ test('isAgentPromptFile matches CLAUDE.md, AGENTS.md, SKILL.md, .cursorrules, an
   assert.equal(isAgentPromptFile('D:\\proj\\.github\\copilot-instructions.md'), true);
   assert.equal(isAgentPromptFile('/repo/.claude/settings.json'), true);
   assert.equal(isAgentPromptFile('/repo/SKILL.md'), true);
+  assert.equal(isAgentPromptFile('/repo/GEMINI.md'), true);
+  assert.equal(isAgentPromptFile('/repo/CODEX.md'), true);
+  assert.equal(isAgentPromptFile('/repo/.windsurfrules'), true);
+  assert.equal(isAgentPromptFile('/repo/.clinerules'), true);
+  assert.equal(isAgentPromptFile('/repo/opencode.json'), true);
   assert.equal(isAgentPromptFile('/repo/src/index.ts'), false);
   assert.equal(isAgentPromptFile('/repo/notes.md', true), true);
 });
@@ -142,4 +152,17 @@ test('controller populates VS Code diagnostics and status bar for CLAUDE.md', as
 
   await controller.openCalculatorCommand();
   assert.deepEqual(externalUrls, ['https://jettlin927.github.io/agentcostlab/']);
+});
+
+test('VS Code extension manifest, icon, privacy policy, and .vsix packager are store-ready', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+  assert.equal(pkg.icon, 'images/icon.png');
+  assert.equal(pkg.galleryBanner?.theme, 'dark');
+  assert.ok(fs.existsSync(path.join(__dirname, pkg.icon)));
+  assert.ok(fs.existsSync(path.join(__dirname, 'PRIVACY.md')));
+
+  const vsixResult = packageVsCodeExtension();
+  assert.ok(fs.existsSync(vsixResult.outPath));
+  assert.ok(vsixResult.fileCount >= 9);
+  assert.ok(vsixResult.byteLength > 2000);
 });
